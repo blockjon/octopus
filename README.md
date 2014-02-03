@@ -16,8 +16,6 @@ In the example code below, the calling context has no knowledge of how each
 model is stored or loaded. Was it pulled from MySQL? Was it pulled from Memcache?
 Did it journal to a log file when I called save? 
 
-The calling context doesn't care.
-
 Code samples:
 -------------
 ```
