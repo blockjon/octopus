@@ -20,7 +20,7 @@ The calling context doesn't care.
 
 Code samples:
 -------------
-
+```
 // Create a new object
 $book = new Book();
 $book->setTitle('A tale of two cities');
@@ -35,3 +35,4 @@ $dao->update($book);
 
 // Delete an object
 $dao->delete($book);
+```
