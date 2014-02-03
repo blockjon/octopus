@@ -1,6 +1,7 @@
 Octopus
 =======
-Octopus was created to help keep your website up even if the database goes down.
+Octopus is being developed to help keep your website up even if the database goes 
+down.
 
 It works with MySQL, MongoDB, Postgres, Redis, and almost any other backend
 including files, queues, and caches. You can write your own data adapter for 
