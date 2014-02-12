@@ -1,6 +1,7 @@
 Octopus
 =======
-Octopus was created to help keep your website up even if the database goes down.
+Octopus is being developed to help keep your website up even if the database goes 
+down.
 
 It works with MySQL, MongoDB, Postgres, Redis, and almost any other backend
 including files, queues, and caches. You can write your own data adapter for 
@@ -16,11 +17,9 @@ In the example code below, the calling context has no knowledge of how each
 model is stored or loaded. Was it pulled from MySQL? Was it pulled from Memcache?
 Did it journal to a log file when I called save? 
 
-The calling context doesn't care.
-
 Code samples:
 -------------
-
+```
 // Create a new object
 $book = new Book();
 $book->setTitle('A tale of two cities');
@@ -35,3 +34,4 @@ $dao->update($book);
 
 // Delete an object
 $dao->delete($book);
+```
