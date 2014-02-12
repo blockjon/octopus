@@ -1,4 +1,7 @@
 {
+    "require" : {
+        "rhumsaa/uuid": "2.7.0"
+    },
     "autoload": {
         "psr-0": { "BlockJon\\Octopus": "lib/" }
     }

@@ -2,7 +2,8 @@
 
 namespace Octopus\DAO;
 
-use Octopus\Model\AbstractModel;
+use Octopus\Model\AbstractModel,
+    Rhumsaa\Uuid\Uuid;    
 
 abstract class AbstractDAO
 {
@@ -22,9 +23,16 @@ abstract class AbstractDAO
     
     /**
      * @param type $model
+     * @return
      */
     public function create(AbstractModel $model)
     {
+        
+        if ($model->getId() === null) {
+            $uuid = (string)Uuid::uuid5(Uuid::NAMESPACE_DNS, uniqid('',true));
+            $model->setId($uuid);
+        }
+        
         // Translate the model into an associative array.
         $data_array = $model->toArray();
         
@@ -32,6 +40,8 @@ abstract class AbstractDAO
         foreach($this->_write_strategies as $strategy) {
             $strategy->create($data_array);
         }
+        
+        return $model;
         
     }
     

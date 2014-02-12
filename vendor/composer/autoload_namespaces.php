@@ -6,5 +6,8 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Symfony\\Component\\Console\\' => array($vendorDir . '/symfony/console'),
+    'Rhumsaa\\Uuid' => array($vendorDir . '/rhumsaa/uuid/src'),
+    'Moontoast\\Math' => array($vendorDir . '/moontoast/math/src'),
     'BlockJon\\Octopus' => array($baseDir . '/lib'),
 );
