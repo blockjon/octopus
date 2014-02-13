@@ -22,11 +22,16 @@ class JsonJournal extends AbstractStrategy
      * @return void
      * @throws Exception
      */
-    public function __construct($streamOrUrl, $mode = null)
+    public function __construct(array $config = array())
     {
+        
+        $streamOrUrl = $config['streamorurl'];
+        
         // Setting the default
-        if (null === $mode) {
+        if (!isset($config['mode'])) {
             $mode = 'a';
+        } else {
+            $mode = $config['mode'];
         }
 
         if (is_resource($streamOrUrl)) {
@@ -49,6 +54,8 @@ class JsonJournal extends AbstractStrategy
                 throw new Exception($msg);
             }
         }
+        
+        parent::__construct($config);
 
     }
 

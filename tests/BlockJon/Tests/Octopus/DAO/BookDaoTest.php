@@ -19,7 +19,7 @@ class BookDaoTest extends \BlockJon\Tests\OctopusTestCase
     public function testCanSaveBook()
     {
         $stream = fopen('php://memory', 'w+');
-        $jsonJournalWriteStrategy = new JsonJournal($stream);
+        $jsonJournalWriteStrategy = new JsonJournal(array('streamorurl'=>$stream));
         $write_strategies = array(
             $jsonJournalWriteStrategy,
         );

@@ -7,8 +7,6 @@ class PdoSqlite extends AbstractStrategy
 
     protected $_dbh;
     
-    protected $_config;
-    
     /**
      * Constructor
      *
@@ -25,7 +23,7 @@ class PdoSqlite extends AbstractStrategy
             throw new \Exception('The sqlite3 extension must be loaded for using this strategy.');
         }
         $this->_dbh = new \PDO('sqlite::memory:');
-        $this->_config = $config;
+        parent::__construct($config);
     }
     
     /**

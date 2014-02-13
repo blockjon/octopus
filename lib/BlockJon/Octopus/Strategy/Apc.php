@@ -38,13 +38,13 @@ class Apc extends AbstractStrategy
      * Test if a cache is available or not (for the given id)
      *
      * @param  string $id cache id
-     * @return int|false (a cache is not available) or "last modified" timestamp (int) of the available cache record
+     * @return boolean
      */
     public function test($id)
     {
         $tmp = apc_fetch($id);
         if (is_array($tmp)) {
-            return $tmp[1];
+            return true;
         }
         return false;
     }
