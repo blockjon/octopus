@@ -15,7 +15,7 @@ class ApcTest extends \BlockJon\Tests\OctopusTestCase
         $this->assertEquals('Octopus\Strategy\Apc', get_class($instance));
     }
 
-    public function testWriteAndReadFromPdoSqlite()
+    public function testWriteAndReadFromApc()
     {
         $strategy = new Apc(array());
         $write_strategies = array(
