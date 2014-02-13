@@ -7,14 +7,16 @@ class PdoSqlite extends AbstractStrategy
 
     protected $_dbh;
     
+    protected $_config;
+    
     /**
      * Constructor
      *
-     * @param  array $options associative array of options
+     * @param  array $config associative array of options
      * @throws Exception
      * @return void
      */
-    public function __construct(array $options = array())
+    public function __construct(array $config = array())
     {
         if (!extension_loaded('pdo')) {
             throw new \Exception('The pdo extension must be loaded for using this strategy.');
@@ -23,21 +25,34 @@ class PdoSqlite extends AbstractStrategy
             throw new \Exception('The sqlite3 extension must be loaded for using this strategy.');
         }
         $this->_dbh = new \PDO('sqlite::memory:');
+        $this->_config = $config;
+    }
+    
+    /**
+     * @return \PDO
+     */
+    public function getPdoHandle() 
+    {
+        return $this->_dbh;
     }
 
     /**
      * Test if a cache is available for the given id and (if yes) return it (false else)
      *
      * @param  string $id cache id
-     * @return mixed|null
+     * @return mixed|array
      */
     public function read($id)
     {
-        $tmp = apc_fetch($id);
-        if (is_array($tmp)) {
-            return $tmp[0];
-        }
-        return null;
+        
+        $sql = 'SELECT `' . implode('`,`', $this->_config['columns']) . '`
+            FROM `' . $this->_config['table'] . '`
+            WHERE id = :id
+            LIMIT 1';
+        $statement = $this->_dbh->prepare($sql, array(\PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY));
+        $statement->execute(array(':id' => $id));
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        return $result;
     }
 
     /**
@@ -48,11 +63,8 @@ class PdoSqlite extends AbstractStrategy
      */
     public function test($id)
     {
-        $tmp = apc_fetch($id);
-        if (is_array($tmp)) {
-            return $tmp[1];
-        }
-        return false;
+        $result = $this->read($id);
+        return $result !== false;
     }
 
     /**
@@ -61,30 +73,18 @@ class PdoSqlite extends AbstractStrategy
      * @param array Data to store
      * @return boolean true if no problem
      */
-    public function create($data_array)
+    public function create(array $data_array)
     {
-        $lifetime = 60; // todo: set this to something meaningful
-        $id = $data_array['id'];
-        
-        $fields = implode(', ', array_keys($data_array));
+        $fields = implode(',', $this->_config['columns']);
         $values = array_values($data_array);
         $questionMarksArray = array();
-        $fieldDefinitions = '';
-        foreach($data_array as $fieldName => $fieldValue) {
-            $fieldDefinitions .= $fieldName . ' varchar(255), ';
+        foreach($data_array as $foo) {
             $questionMarksArray[] = '?';
         }
-        $fieldDefinitions = trim($fieldDefinitions);
-        if(strlen($fieldDefinitions) > 0) {
-            $fieldDefinitions = substr($fieldDefinitions, 0, strlen($fieldDefinitions)-1);
-        }
-        $questionMarksString = implode(',', $questionMarksArray);
-        $x = $this->_dbh->exec("CREATE TABLE mytable ($fieldDefinitions);" );
-        
-        $sql = "INSERT INTO mytable ($fields) VALUES ($questionMarksString)";
+        $questionMarksString = implode(',', $questionMarksArray);        
+        $sql = "INSERT INTO `" . $this->_config['table'] . "` ($fields) VALUES ($questionMarksString)";
         $stmt = $this->_dbh->prepare($sql);
         $result = $stmt->execute($values);
-
         return $result;
     }
     
@@ -96,21 +96,35 @@ class PdoSqlite extends AbstractStrategy
      */
     public function update($data_array)
     {
-        $lifetime = 60; // todo: set this to something meaningful
-        $id = $data_array['id'];
-        $result = apc_store($id, array($data_array, time(), $lifetime), $lifetime);
-        return $result;
+        $setTemplate = '';
+        $dictionary = array();
+        $counter = 1;
+        foreach($data_array as $key => $value) {
+            $setTemplate .= "$key = :var$counter, ";
+            $dictionary["var$counter"] = $value;
+            $counter++;
+        }
+        $dictionary["id"] = $data_array['id'];
+        $setTemplate = rtrim($setTemplate);
+        $setTemplate = substr($setTemplate, 0, strlen($setTemplate)-1);
+        $sql = "update `" . $this->_config['table'] . "` SET $setTemplate WHERE id = :id";
+        $stmt = $this->_dbh->prepare($sql);
+        $result = $stmt->execute($dictionary);
+        return $result === true;
     }
 
     /**
-     * Remove a cache record
+     * Remove a record
      *
      * @param  string $id cache id
      * @return boolean true if no problem
      */
     public function delete($id)
     {
-        return apc_delete($id);
+        $sql = "DELETE FROM `" . $this->_config['table'] . "` WHERE id = :id";
+        $statement = $this->_dbh->prepare($sql, array(\PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY));
+        $result = $statement->execute(array(':id' => $id));
+        return $result;
     }
 
 }

@@ -11,6 +11,12 @@ abstract class AbstractDAO
     private $_write_strategies = array();
     private $_read_strategies = array();
     
+    public static function getConfig($key) 
+    {
+        $config = static::$_config;
+        return $config[$key];
+    }
+    
     /**
      * @param array $write_strategies
      * @param array $read_strategies
@@ -33,7 +39,6 @@ abstract class AbstractDAO
             $model->setId($uuid);
         }
         
-        // Translate the model into an associative array.
         $data_array = $model->toArray();
         
         // Loop over each of the write strategies executing the create method.
@@ -48,7 +53,7 @@ abstract class AbstractDAO
     /**
      * 
      * @param type $id
-     * @return mixed
+     * @return null|instance of abstract model
      */
     public function read($id) 
     {
@@ -79,9 +84,11 @@ abstract class AbstractDAO
         
     }
     
-    public function delete($id) 
+    public function delete($model) 
     {
-        
+        foreach($this->_write_strategies as $strategy) {
+            $strategy->delete($model->getId());
+        }
     }
     
 }
