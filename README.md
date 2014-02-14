@@ -1,26 +1,9 @@
 Octopus
 =======
-Octopus is being developed to help keep your website up even if the database goes 
-down.
+Octopus lets you to Create, Update, Read and Delete models from any backend using 
+any persistence/storage system (database, file, cache, queues etc.).
 
-It won't be ready for beta use for a while. I'm still laying down the base 
-structure and committing against master.
-
-It works with MySQL, MongoDB, Postgres, Redis, and almost any other backend
-including files, queues, and caches. You can write your own data adapter for 
-any backend we haven't yet implemented.
-
-The Octopus framework talks to your backend adapters for you. You choose the rules 
-for writing to each backend. One common use of Octopus is to automatically store 
-your model in Memcache in addition to MySQL. During a read operation, Octopus can 
-automatically pull the record from Memcache thereby bypassing your database
-entirely.
-
-In the example code below, the calling context has no knowledge of how each
-model is stored or loaded. Was it pulled from MySQL? Was it pulled from Memcache?
-Did it journal to a log file when I called save? 
-
-Code samples:
+The Octopus API Is Simple:
 -------------
 ```
 // Create a new object
@@ -38,3 +21,13 @@ $dao->update($book);
 // Delete an object
 $dao->delete($book);
 ```
+
+Each "DAO" is a data access object configured with the strategy for reading from
+and writing to your backends. You can implement new backend strategies for Octopus
+that we haven't created. Octopus ships with adapters for SqLite, APC, and text files. 
+More on-board adapters are on the way.
+
+One of the key features of Octopus is the ability to set strategy rules for your data
+access. The most common one is that models are written to database and cache, whereas
+reads should first attempt a read from Memcache and finally from MySQL if memcache
+did not have the desired object. Octopus can do this for you with very basic configuration.
