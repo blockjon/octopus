@@ -3,6 +3,9 @@ Octopus
 Octopus is being developed to help keep your website up even if the database goes 
 down.
 
+It won't be ready for beta use for a while. I'm still laying down the base 
+structure and committing against master.
+
 It works with MySQL, MongoDB, Postgres, Redis, and almost any other backend
 including files, queues, and caches. You can write your own data adapter for 
 any backend we haven't yet implemented.
