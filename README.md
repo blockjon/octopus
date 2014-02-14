@@ -2,6 +2,8 @@ Octopus
 =======
 Octopus lets you to Create, Update, Read and Delete models using any backend as your persistence/storage system (databases, files, caches, queues etc.). Rather than programing against specific vendor libraries such as MySQL and Mongo, consider using Octopus... the last data access API you may ever need.
 
+Disclaimer: This is under active development. Will not be ready for production use until June, 2014.
+
 The Octopus API Is Simple:
 -------------
 ```
