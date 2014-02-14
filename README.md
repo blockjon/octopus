@@ -21,6 +21,12 @@ $dao->update($book);
 $dao->delete($book);
 ```
 
-Each "DAO" is a data access object configured with strategies for reading from and writing to your backends. You can implement new backend strategies for Octopus that we haven't created. Octopus ships with adapters for SQLite, APC, and text files. More on-board adapters are on the way.
+Octopus works by allowing you to customize each "DAO" (data access object) with strategies for reading from and writing to your backends. You can register multiple strategies for reading and writing your models.
 
-One of the key features of Octopus is the ability to set strategy rules for your data access. The most common one is that models are written to database and cache, whereas reads should first attempt a read from Memcache and finally from MySQL if memcache did not have the desired object. Octopus can do this for you with very basic configuration.
+This strategy pattern allows Octopus projects to more easily scale and also be tolerant to backend outages. 
+
+The most common two examples of where Octopus really shines are as follows:
+
+1) You can set your models to automatically read from Memcache. If a model isn't found, Octopus can automatically load the model from a database query instead.
+
+2) If MySQL goes down, you can instead write to Memcache and also to a journaled log file. Subsequent reads will find your models if they are set to first read from Memcache. Later, when the database comes back online, you can replay the journaled database changes such that the missing records flow back into the database.
