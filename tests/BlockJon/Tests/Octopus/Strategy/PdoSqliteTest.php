@@ -6,7 +6,7 @@ use Octopus\Strategy\PdoSqlite,
     Daos\BookDao,
     Models\Book;
 
-class PdoSqliteTest extends \BlockJon\Tests\OctopusTestCase
+class PdoSqliteTest extends AbstractStrategyTest
 {
     
     protected $_dbh;
@@ -38,7 +38,7 @@ class PdoSqliteTest extends \BlockJon\Tests\OctopusTestCase
         $this->assertEquals('Octopus\Strategy\PdoSqlite', get_class($instance));
     }
 
-    public function testWriteAndReadFromPdoSqlite()
+    public function testCrud()
     {
         $write_strategies = array(
             $this->_strategy
@@ -46,42 +46,7 @@ class PdoSqliteTest extends \BlockJon\Tests\OctopusTestCase
         $read_strategies = array(
             $this->_strategy,
         );
-        
-        $bookDao = new BookDao($write_strategies, $read_strategies);
-        
-        $book = new Book();
-        $title = uniqid();
-        $author = uniqid();
-        $book->setTitle($title);
-        $book->setAuthor($author);
-        $bookDao->create($book);
-        $this->assertTrue(strlen($book->getId()) == 36);
-        
-        // Ensure the book is returned.
-        $returnedBook = $bookDao->read($book->getId());
-        $this->assertEquals('Models\Book', get_class($returnedBook));
-        $this->assertEquals($book->getId(), $returnedBook->getId());
-        $this->assertEquals($title, $returnedBook->getTitle());
-        $this->assertEquals($author, $returnedBook->getAuthor());
-        
-        $this->assertFalse($this->_strategy->test(uniqid()));
-        $this->assertTrue($this->_strategy->test($book->getId()));
-        
-        // Update it.
-        $returnedBook->setTitle('foo123');
-        $bookDao->update($returnedBook);
-        
-        // Make sure its updated.
-        $returnedBook2 = $bookDao->read($book->getId());
-        $this->assertEquals('foo123', $returnedBook2->getTitle());
-        
-        // Remove it.
-        $bookDao->delete($book);
-        
-        // Ensure it's gone.
-        $this->assertFalse($this->_strategy->test($book->getId()));
-        $this->assertNull($bookDao->read($book->getId()));
-        
+        $this->_testGoldenCrudPath($write_strategies, $read_strategies);
     }
 
 }

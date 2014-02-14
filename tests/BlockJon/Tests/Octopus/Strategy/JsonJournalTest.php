@@ -4,14 +4,17 @@ namespace BlockJon\Tests\Octopus\Strategy;
 
 use Octopus\Strategy\JsonJournal;
 
-class JsonJournalTest extends \BlockJon\Tests\OctopusTestCase
+class JsonJournalTest extends AbstractStrategyTest
 {
+    
+    public function setUp() 
+    {
+        $this->_strategy = new JsonJournal(array('streamorurl' => fopen('php://memory', 'w+')));
+    }
     
     public function testCanInstantiateJsonJournal()
     {
-        $stream = fopen('php://memory', 'w+');
-        $instance = new JsonJournal(array('streamorurl' => $stream));
-        $this->assertEquals('Octopus\Strategy\JsonJournal', get_class($instance));
+        $this->assertEquals('Octopus\Strategy\JsonJournal', get_class($this->_strategy));
     }
     
     public function testCanWriteToJsonJournal()
@@ -23,6 +26,17 @@ class JsonJournalTest extends \BlockJon\Tests\OctopusTestCase
             'year' => 1984,
         );
         $instance->create($data);
+    }
+    
+    public function testC()
+    {
+        $write_strategies = array(
+            $this->_strategy
+        );
+        $read_strategies = array(
+            $this->_strategy,
+        );
+        $this->_testGoldenCPath($write_strategies, $read_strategies);
     }
     
 }

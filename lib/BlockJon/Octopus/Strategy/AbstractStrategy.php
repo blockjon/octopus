@@ -14,27 +14,32 @@ abstract class AbstractStrategy
     
     public function create(array $data_array) 
     {
-        throw new Exception(__METHOD__ . ' not implemented for this strategy.');
+         $this->throwException(__FUNCTION__);
     }
     
     public function test($id) 
     {
-        throw new Exception(__METHOD__ . ' not implemented for this strategy.');
+         $this->throwException(__FUNCTION__);
     }
     
     public function read($id) 
     {
-         throw new Exception(__METHOD__ . ' not implemented for this strategy.');
+         $this->throwException(__FUNCTION__);
     }
 
     public function update(array $data_array) 
     {
-         throw new Exception(__METHOD__ . ' not implemented for this strategy.');
+         $this->throwException(__FUNCTION__);
     }
     
     public function delete($id) 
     {
-         throw new Exception(__METHOD__ . ' not implemented for this strategy.');
+         $this->throwException(__FUNCTION__);
+    }
+    
+    private function throwException($method) 
+    {
+         throw new Exception\InvalidStrategyMethod('Method ' . $method . '() not implemented for strategy ' . get_class($this) . '.');        
     }
     
 }
