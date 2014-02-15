@@ -16,6 +16,17 @@ class BookDao extends AbstractDAO
             ),
             'table' => 'sometable'
         ),
+        'pdomysql' => array(
+            'columns' => array(
+                'id',
+                'title',
+                'author',
+            ),
+            'table' => 'sometable',
+            'dbname' => 'test',
+            'username' => '',
+            'password' => '',
+        ),
     );
     
 }
