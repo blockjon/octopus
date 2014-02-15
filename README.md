@@ -27,7 +27,7 @@ Octopus works by allowing you to customize each "DAO" (data access object) with 
 
 This strategy pattern allows Octopus projects to more easily scale and also be tolerant to backend outages. 
 
-The most common two examples of where Octopus really shines are as follows:
+Example Use Cases:
 
 1) You can set your models to automatically read from Memcache. If a model isn't found, Octopus can automatically load the model from a database query instead.
 
