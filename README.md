@@ -31,10 +31,13 @@ Example Use Cases:
 ------------------
 
 1) Speed: Elegantly Store All Data In Memcache
+
 Easily configure Octopus to store a copy of all of your models in Memcache. You can then configure your Reads to try to first load a model from Memcache and to only then use the database as your fallback data access strategy.
 
 2) Robustness: Keep System Up Even If Database Goes Down
+
 If your database goes down, Octopus can keep your system up. Configure your Octopus settings to first write to Memcache, then to a journaled log file, and finally to the database. During a database outage, models are still written to your journaled change log and Memcache. This means the read requests are able to find their data. Later, when the database recovers, you can replay the changes in the journaled log file which causes the database to advance to the correct current state.
 
 3) Easy Migration Between Databases
+
 With most websites, migrating from MySQL to Postgres to Microsoft SQL Server and then to MongoDB would be nearly impmossible because of the tight coupling between the codebase and the vendor specfic features of your data backend. With Octopus, you would only need to change your data access stratgy setting to talk to your new backend. No additional code level changes would be necessary throughout the rest of your codebase. (You'd still need to manually do a one time data migration between your databases).
