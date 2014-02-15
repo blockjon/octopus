@@ -1,6 +1,6 @@
 Octopus
 =======
-Octopus is a vendor neutral data access API. You can Create, Read, Update and Delete models using any backend as your persistence & storage system including (databases, files, caches, queues etc.). Rather than programing against a specific vendor library such as MySQL or Mongo, consider using Octopus instead.
+Octopus is a vendor neutral data access API. You can Create, Read, Update and Delete models using any database or other type of data storage fromat such as files, caches, and queues. Instead of coding against a specific vendor library such as MySQL or Mongo, consider using Octopus instead in your next PHP projct.
 
 Disclaimer: This is under active development. Will not be ready for production use until June, 2014.
 
