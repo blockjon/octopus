@@ -6,6 +6,7 @@ class Memcache extends AbstractStrategy
 {
     
     protected $_mch;
+    protected $_expire; // lifetime
 
     /**
      * Constructor
@@ -20,7 +21,8 @@ class Memcache extends AbstractStrategy
             throw new \Exception('The memcache extension must be loaded for using this strategy.');
         }
         $this->_mch = new \Memcache();
-        $this->_mch->connect('localhost', 11211);
+        $this->_mch->connect($options['host'], $options['port']);
+        $this->_expire = $options['expire'];
     }
 
     /**
@@ -61,10 +63,8 @@ class Memcache extends AbstractStrategy
      */
     public function create($data_array)
     {
-        $lifetime = 60; // seconds before expire
         $id = $data_array['id'];
-        // $result = apc_store($id, array($data_array, time(), $lifetime), $lifetime);
-        $result = $this->_mch->set($id, $data_array, \MEMCACHE_COMPRESSED, $lifetime);
+        $result = $this->_mch->set($id, $data_array, \MEMCACHE_COMPRESSED, $this->_expire);
         return $result;
     }
     
@@ -76,10 +76,8 @@ class Memcache extends AbstractStrategy
      */
     public function update($data_array)
     {
-        $lifetime = 60; // seconds before expire
         $id = $data_array['id'];
-        // $result = apc_store($id, array($data_array, time(), $lifetime), $lifetime);
-        $result = $this->_mch->set($id, $data_array, \MEMCACHE_COMPRESSED, $lifetime);
+        $result = $this->_mch->set($id, $data_array, \MEMCACHE_COMPRESSED, $this->_expire);
         return $result;
     }
 

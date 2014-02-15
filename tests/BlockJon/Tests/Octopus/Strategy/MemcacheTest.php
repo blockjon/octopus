@@ -3,15 +3,15 @@
 namespace BlockJon\Tests\Octopus\Strategy;
 
 use Octopus\Strategy\Memcache,
-    Daos\BookDao,
-    Models\Book;
+    Daos\BookDao;
 
 class MemcacheTest extends AbstractStrategyTest
 {
     
     public function setUp() 
     {
-        $this->_strategy = new Memcache(array());
+        $config = BookDao::getConfig('memcache');
+        $this->_strategy = new Memcache($config);
     }
     
     public function testCanInstantiatePdoStrategy()

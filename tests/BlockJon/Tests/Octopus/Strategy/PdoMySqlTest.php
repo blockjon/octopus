@@ -3,8 +3,7 @@
 namespace BlockJon\Tests\Octopus\Strategy;
 
 use Octopus\Strategy\PdoMySql,
-    Daos\BookDao,
-    Models\Book;
+    Daos\BookDao;
 
 class PdoMySqlTest extends AbstractStrategyTest
 {

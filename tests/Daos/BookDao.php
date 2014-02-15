@@ -27,6 +27,11 @@ class BookDao extends AbstractDAO
             'username' => '',
             'password' => '',
         ),
+        'memcache' => array(
+            'host' => 'localhost',
+            'port' => '11211',
+            'expire' => 0
+        ),
     );
     
 }

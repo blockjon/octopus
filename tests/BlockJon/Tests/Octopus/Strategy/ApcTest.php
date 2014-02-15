@@ -21,6 +21,9 @@ class ApcTest extends AbstractStrategyTest
 
     public function testCrud()
     {
+        if (!extension_loaded('apc')) {
+            $this->markTestSkipped('Apc is not installed.');            
+        }
         $option = ini_get('apc.enable_cli');
         if(!(bool)$option) {
             $this->markTestSkipped('This test only works with apc cache enabled on the cli.');
