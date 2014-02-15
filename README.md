@@ -36,7 +36,7 @@ Easily configure Octopus to store a copy of all of your models in Memcache. You 
 
 2) Robustness: Keep System Up Even If Database Goes Down
 
-If your database goes down, Octopus can keep your system up. Configure your Octopus settings to first write to Memcache, then to a journaled log file, and finally to the database. During a database outage, models are still written to your journaled change log and Memcache. This means the read requests are able to find their data. Later, when the database recovers, you can replay the changes in the journaled log file which causes the database to advance to the correct current state.
+If your database goes down, Octopus can keep your system up. Configure your Octopus settings to first write to Memcache, then to a journaled log file, and finally to the database. During a database outage, models are still written to Memcache and your journaled change log. This means the Read requests are able to find their data. Later, when the database recovers, you can replay the changes in the journaled log file which causes the database to advance to the correct current state.
 
 3) Easy Migration Between Databases
 
