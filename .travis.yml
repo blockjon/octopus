@@ -8,3 +8,4 @@ before_script:
  - ./tests/travis/memcache-setup.sh
  - echo "extension = apc.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
  - echo "apc.enable_cli=on" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+
