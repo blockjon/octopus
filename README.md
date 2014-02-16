@@ -1,3 +1,6 @@
+Master: [![Build Status](https://secure.travis-ci.org/blockjon/octopus.png?branch=master)](http://travis-ci.org/blockjon/octopus)
+Master: [![Coverage Status](https://coveralls.io/repos/blockjon/octopus/badge.png?branch=master)](https://coveralls.io/r/blockjon/octopus?branch=master)
+
 Octopus
 =======
 Octopus is a vendor neutral data access API for PHP. You can Create, Read, Update and Delete models using any database or other type of data storage fromat such as files, caches, and queues. Instead of tightly coupling your project to one specific vendor library such as MySQL or Mongo, consider using Octopus instead, a flexible alternative.
