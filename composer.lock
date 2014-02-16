@@ -1,9 +1,5 @@
 {
-    "_readme": [
-        "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
-    ],
-    "hash": "79262b0757847503fb03c50aec9393b9",
+    "hash": "4084ca3c064135866fcc4a1129164eff",
     "packages": [
         {
             "name": "moontoast/math",
@@ -23,7 +19,9 @@
                 "ext-bcmath": "*",
                 "php": ">=5.3.3"
             },
+            "time": "2013-01-19 17:42:34",
             "type": "library",
+            "installation-source": "dist",
             "autoload": {
                 "psr-0": {
                     "Moontoast\\Math": "src/"
@@ -38,8 +36,7 @@
             "keywords": [
                 "bcmath",
                 "math"
-            ],
-            "time": "2013-01-19 17:42:34"
+            ]
         },
         {
             "name": "rhumsaa/uuid",
@@ -67,6 +64,7 @@
             "suggest": {
                 "doctrine/dbal": "Allow the use of a UUID as doctrine field type."
             },
+            "time": "2014-01-31 18:32:03",
             "bin": [
                 "bin/uuid"
             ],
@@ -76,6 +74,7 @@
                     "dev-master": "2.6.x-dev"
                 }
             },
+            "installation-source": "dist",
             "autoload": {
                 "psr-0": {
                     "Rhumsaa\\Uuid": "src/"
@@ -101,8 +100,7 @@
                 "guid",
                 "identifier",
                 "uuid"
-            ],
-            "time": "2014-01-31 18:32:03"
+            ]
         },
         {
             "name": "symfony/console",
@@ -128,12 +126,14 @@
             "suggest": {
                 "symfony/event-dispatcher": ""
             },
+            "time": "2014-01-01 08:14:50",
             "type": "library",
             "extra": {
                 "branch-alias": {
                     "dev-master": "2.4-dev"
                 }
             },
+            "installation-source": "dist",
             "autoload": {
                 "psr-0": {
                     "Symfony\\Component\\Console\\": ""
@@ -156,24 +156,15 @@
                 }
             ],
             "description": "Symfony Console Component",
-            "homepage": "http://symfony.com",
-            "time": "2014-01-01 08:14:50"
+            "homepage": "http://symfony.com"
         }
     ],
-    "packages-dev": [
-
-    ],
+    "packages-dev": null,
     "aliases": [
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": [
-
-    ],
-    "platform": [
-
-    ],
-    "platform-dev": [
-
-    ]
+    "stability-flags": {
+        "satooshi/php-coveralls": 20
+    }
 }
