@@ -1,8 +1,12 @@
 language: php
+services:
+  - memcached
 php:
   - "5.5"
   - "5.4"
   - "5.3"
 before_script:
+ - mysql -e 'create database test;'
  - echo "extension = apc.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
  - echo "apc.enable_cli=on" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+ - echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
