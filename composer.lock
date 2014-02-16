@@ -1,5 +1,5 @@
 {
-    "hash": "77d900c3320926e557259d45f737e03b",
+    "hash": "79262b0757847503fb03c50aec9393b9",
     "packages": [
         {
             "name": "moontoast/math",
@@ -164,7 +164,7 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "satooshi/php-coveralls": 20
-    }
+    "stability-flags": [
+
+    ]
 }
