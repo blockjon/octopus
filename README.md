@@ -4,7 +4,7 @@ Octopus is a vendor neutral data access API for PHP. You can Create, Read, Updat
 
 Note: This is under active development. Will not be ready for production use until June, 2014.
 
-The Octopus API Is Simple:
+The Octopus API Is Simple
 -------------
 ```
 // Create a new object
@@ -27,7 +27,7 @@ Octopus works by allowing you to customize each "DAO" (data access object) with 
 
 This strategy pattern allows Octopus projects to more easily scale and also be tolerant to backend outages. 
 
-Example Use Cases:
+Example Use Cases
 ------------------
 
 1) Speed: Easily Store All Models In A Database And Also In Memcache
@@ -36,8 +36,14 @@ Easily configure Octopus to store a copy of all of your models in both a databas
 
 2) Robustness: Keep System Up Even If Database Goes Down
 
-During a database outage, Octopus can keep your system up. Configure Octopus to first write to Database (with a special backup strategy of journaled log) and then Memcache and the 2nd strategy. During a database outage, models are still written to Memcache and your journaled change log. This means the read requests are able to find their data during the database outage in Memcache. Later, when the database recovers, you can replay the changes in the journaled log file which causes your database to advance to the correct current state.
+During a database outage, Octopus can keep your system up. Configure Octopus to use your database as the first strategy (with a journaled log strategy that is utilized if that fails) and then Memcache as the 2nd strategy. During a database outage, models are still written to Memcache and also to the journaled change log. When reads happen, data is served from Memcache. This masks the otherwise crippiling effects of a database outage. Later, when the database recovers, you can replay the changes in the journaled log file which causes your database to advance to the correct current state.
 
 3) Easy Migration Between Databases
 
 With most websites, migrating between different databases like MySQL, Postgres, Microsoft SQL Server, MongoDB and others would be nearly impossible because of the tight coupling between your codebase the required data access patterns of the database vendor you're using. Using Octopus, you only need to change your data access strategy setting to use to your new backend. No additional code level changes are necessary throughout the rest of your codebase. (You'd still need to manually do a one time data migration between your databases).
+
+Data Strategies Currently Supported
+-----------------------------------
+Memcache, APC, PdoSqlite, PdoMysql, Json log.
+
+Note: You can easily implement custom strategy adapters. More adapters be added to Octopus as development continues. Some of the next adapters we'd like to add include MongoDb, REST, and SQS.
