@@ -16,19 +16,19 @@ class AbstractRepositoryTest extends \BlockJon\Tests\OctopusTestCase
     public function testCanIterateOverResultsUsingRespository() 
     {
         $pdoConfig = BookDao::getConfig('pdosqlite');
-        $pdoSqliteStratgy = new \Octopus\Strategy\PdoSqlite($pdoConfig);
-        $this->createBookTestTableIWithPdoHandle($pdoSqliteStratgy->getPdoHandle(), $pdoConfig);
-        
-        $apcStrategy = new \Octopus\Strategy\Apc(array());
+        $strategyA = new \Octopus\Strategy\PdoSqlite($pdoConfig);
+        $strategyB = new \Octopus\Strategy\PdoSqlite($pdoConfig);
+        $this->createBookTestTableIWithPdoHandle($strategyA->getPdoHandle(), $pdoConfig);
+        $this->createBookTestTableIWithPdoHandle($strategyB->getPdoHandle(), $pdoConfig);
         
         $w = array(
-            $pdoSqliteStratgy,
-            $apcStrategy
+            $strategyA,
+            $strategyB
         );
         
-        // Note how I'm only reading from APC! Cool.
+        // Note how I'm only reading from strategyB.
         $r = array(
-            $apcStrategy
+            $strategyB
         );
         $bookDao = new \Daos\BookDao($w, $r);
         
@@ -41,7 +41,7 @@ class AbstractRepositoryTest extends \BlockJon\Tests\OctopusTestCase
         $bookRepository = new BookRepository($bookDao);
         
         // Run a query which returns all of the books.
-        $result = $bookRepository->getAllBooks($pdoSqliteStratgy->getPdoHandle());
+        $result = $bookRepository->getAllBooks($strategyA->getPdoHandle());
         
         $this->assertTrue($result instanceOf \Traversable);
         $this->assertTrue($result instanceOf \Countable);

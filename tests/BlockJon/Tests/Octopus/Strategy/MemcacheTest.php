@@ -14,7 +14,7 @@ class MemcacheTest extends AbstractStrategyTest
         $this->_strategy = new Memcache($config);
     }
     
-    public function testCanInstantiatePdoStrategy()
+    public function testCanInstantiateMemcacheStrategy()
     {
         $this->assertEquals('Octopus\Strategy\Memcache', get_class($this->_strategy));
     }
