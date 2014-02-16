@@ -11,4 +11,10 @@
          syntaxCheck="false"
          bootstrap="./tests/bootstrap.php"
 >
+	<testsuites>
+		<testsuite name="Octopus test suite">
+			<directory>./tests/BlockJon/Tests/Octopus</directory>
+		</testsuite>
+	</testsuites>
+
 </phpunit>
