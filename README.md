@@ -1,5 +1,4 @@
 Master: [![Build Status](https://secure.travis-ci.org/blockjon/octopus.png?branch=master)](http://travis-ci.org/blockjon/octopus)
-Master: [![Coverage Status](https://coveralls.io/repos/blockjon/octopus/badge.png?branch=master)](https://coveralls.io/r/blockjon/octopus?branch=master)
 
 Octopus
 =======
