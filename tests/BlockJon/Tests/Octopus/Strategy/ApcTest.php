@@ -2,9 +2,7 @@
 
 namespace BlockJon\Tests\Octopus\Strategy;
 
-use Octopus\Strategy\Apc,
-    Daos\BookDao,
-    Models\Book;
+use Octopus\Strategy\Apc;
 
 class ApcTest extends AbstractStrategyTest
 {
@@ -14,7 +12,7 @@ class ApcTest extends AbstractStrategyTest
         $this->_strategy = new Apc(array());
     }
     
-    public function testCanInstantiatePdoStrategy()
+    public function testCanInstantiateApcStrategy()
     {
         $this->assertEquals('Octopus\Strategy\Apc', get_class($this->_strategy));
     }

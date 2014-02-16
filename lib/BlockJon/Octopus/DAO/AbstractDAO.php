@@ -74,7 +74,8 @@ abstract class AbstractDAO
             }
         }
         if($result) {
-            $model = new \Models\Book(); // todo: pick class based on precise dao.
+            $modelClassName = $this->getModelClassName();
+            $model = new $modelClassName(); // todo: pick class based on precise dao.
             $model->hydrate($result);
         }
         return $model;
@@ -156,6 +157,11 @@ abstract class AbstractDAO
     public function setPrimaryWriteBackupStrategy(\Octopus\Strategy\AbstractStrategy $strategy)
     {
         $this->_primary_write_backup_strategy = $strategy;
+    }
+    
+    public function getModelClassName()
+    {
+        return static::$modelClassName;
     }
     
 }

@@ -4,7 +4,6 @@ namespace BlockJon\Tests\Octopus\DAO;
 
 use Daos\BookDao,
     Models\Book,
-    Octopus\Strategy\Apc,
     Octopus\Strategy\PdoSqlite,
     Octopus\Strategy\Memcache;
 
@@ -32,20 +31,6 @@ class AbstractDaoTest extends \BlockJon\Tests\OctopusTestCase
         $bookDaoMock->create(new Book);
     }
     
-    
-    private function warmFakeTable($dbhandle) 
-    {
-        $config = BookDao::getConfig('pdosqlite');
-        $fieldDefinitions = '';
-        foreach($config['columns'] as $field) {
-            $fieldDefinitions .= "$field varchar(255), ";
-        }
-        $fieldDefinitions = rtrim($fieldDefinitions);
-        $fieldDefinitions = substr($fieldDefinitions, 0, strlen($fieldDefinitions)-1);
-        $sql = "CREATE TABLE " . $config['table'] . " ($fieldDefinitions);";
-        $error = $dbhandle->exec($sql);
-    }
-    
     /**
      * @expectedException \RuntimeException
      */
@@ -56,7 +41,7 @@ class AbstractDaoTest extends \BlockJon\Tests\OctopusTestCase
         $pdoSqliteStrategyMock  ->expects($this->any())
                                 ->method('create')
                                 ->will($this->throwException(new \RuntimeException));
-        $this->warmFakeTable($pdoSqliteStrategyMock->getPdoHandle());
+        $this->createBookTestTableIWithPdoHandle($pdoSqliteStrategyMock->getPdoHandle(), $pdoConfig);
         
         $w = array(
             $pdoSqliteStrategyMock,
@@ -83,7 +68,7 @@ class AbstractDaoTest extends \BlockJon\Tests\OctopusTestCase
         $pdoSqliteStrategyMockBackup  ->expects($this->once())
                                 ->method('create');
 
-        $this->warmFakeTable($pdoSqliteStrategyMockBroken->getPdoHandle());
+        $this->createBookTestTableIWithPdoHandle($pdoSqliteStrategyMockBroken->getPdoHandle(), $pdoConfig);
         
         $w = array(
             $pdoSqliteStrategyMockBroken,
@@ -110,7 +95,7 @@ class AbstractDaoTest extends \BlockJon\Tests\OctopusTestCase
         $pdoSqliteStrategyMockBackup  ->expects($this->never())
                                       ->method('create');
 
-        $this->warmFakeTable($pdoSqliteStrategyMock->getPdoHandle());
+        $this->createBookTestTableIWithPdoHandle($pdoSqliteStrategyMock->getPdoHandle(), $pdoConfig);
         
         $w = array(
             $pdoSqliteStrategyMock,

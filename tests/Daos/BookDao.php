@@ -7,6 +7,8 @@ use Octopus\DAO\AbstractDAO;
 class BookDao extends AbstractDAO
 {
     
+    static $modelClassName = '\Models\Book';
+    
     static $_config = array(
         'pdosqlite' => array(
             'columns' => array(
