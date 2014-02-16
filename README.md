@@ -30,13 +30,13 @@ This strategy pattern allows Octopus projects to more easily scale and also be t
 Example Use Cases:
 ------------------
 
-1) Speed: Elegantly Store All Data In Memcache
+1) Speed: Easily Store All Models In A Database And Also In Memcache
 
-Easily configure Octopus to store a copy of all of your models in Memcache. You can then configure your Reads to try to first load a model from Memcache and to only then use the database as your fallback data access strategy.
+Easily configure Octopus to store a copy of all of your models in both a database and also Memcache. You can then configure your read operations to first attempt pulling from Memcache and to only subsequently use the database as a fallback data access strategy.
 
 2) Robustness: Keep System Up Even If Database Goes Down
 
-If your database goes down, Octopus can keep your system up. Configure your Octopus settings to first write to Memcache, then to a journaled log file, and finally to the database. During a database outage, models are still written to Memcache and your journaled change log. This means the Read requests are able to find their data. Later, when the database recovers, you can replay the changes in the journaled log file which causes the database to advance to the correct current state.
+During a database outage, Octopus can keep your system up. Configure Octopus to first write to Database (with a special backup strategy of journaled log) and then Memcache and the 2nd strategy. During a database outage, models are still written to Memcache and your journaled change log. This means the read requests are able to find their data during the database outage. Later, when the database recovers, you can replay the changes in the journaled log file which causes your database to advance to the correct current state.
 
 3) Easy Migration Between Databases
 
