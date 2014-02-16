@@ -88,6 +88,7 @@ class JsonJournal extends AbstractStrategy
         if (false === @fwrite($this->_stream, $json_string)) {
             throw new Exception("Unable to write to stream");
         }
+        return true;
     }
 
 }

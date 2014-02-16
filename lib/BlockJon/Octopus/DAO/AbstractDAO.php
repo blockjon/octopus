@@ -8,9 +8,21 @@ use Octopus\Model\AbstractModel,
 abstract class AbstractDAO
 {
     
+    const METHOD_CREATE = 'create';
+    const METHOD_READ = 'read';
+    const METHOD_UPDATE = 'update';
+    const METHOD_DELETE = 'delete';
+    
     private $_write_strategies = array();
     private $_read_strategies = array();
     
+    protected $_primary_write_backup_strategy;
+    
+    /**
+     * Returns an associative array config for a backend.
+     * @param string $key
+     * @return array
+     */
     public static function getConfig($key) 
     {
         $config = static::$_config;
@@ -28,32 +40,28 @@ abstract class AbstractDAO
     }
     
     /**
+     * Create a model.
+     * 
      * @param type $model
-     * @return
+     * @return void
+     * @throws \Exception
      */
     public function create(AbstractModel $model)
     {
-        
         if ($model->getId() === null) {
             $uuid = (string)Uuid::uuid5(Uuid::NAMESPACE_DNS, uniqid('',true));
             $model->setId($uuid);
         }
-        
-        $data_array = $model->toArray();
-        
         // Loop over each of the write strategies executing the create method.
-        foreach($this->_write_strategies as $strategy) {
-            $strategy->create($data_array);
-        }
-        
-        return $model;
-        
+        $this->writeDataChange($model, self::METHOD_CREATE);
     }
     
     /**
+     * Get a model.
      * 
      * @param type $id
      * @return null|instance of abstract model
+     * @throws \Exception
      */
     public function read($id) 
     {
@@ -72,23 +80,82 @@ abstract class AbstractDAO
         return $model;
     }
     
+    /**
+     * Update a model.
+     * 
+     * @param \Octopus\Model\AbstractModel $model
+     * @throws \Exception
+     */
     public function update(AbstractModel $model)
     {
-        // Translate the model into an associative array.
-        $data_array = $model->toArray();
-        
         // Loop over each of the write strategies executing the create method.
-        foreach($this->_write_strategies as $strategy) {
-            $strategy->update($data_array);
-        }
-        
+        $this->writeDataChange($model, self::METHOD_UPDATE);
     }
     
-    public function delete($model) 
+    /**
+     * Delete a model.
+     * 
+     * @param type $model
+     * @return bool
+     * @throws \Exception
+     */
+    public function delete(AbstractModel $model) 
     {
-        foreach($this->_write_strategies as $strategy) {
-            $strategy->delete($model->getId());
+        return $this->writeDataChange($model, self::METHOD_DELETE);
+    }
+    
+    /**
+     * Controller for the write loop.
+     * 
+     * @param \Octopus\Model\AbstractModel $model
+     * @param string $action
+     * @throws \Exception
+     */
+    protected function writeDataChange(AbstractModel $model, $action) 
+    {
+        foreach($this->_write_strategies as $index => $strategy) {
+            try {
+                // Apply the write to the given strategy.
+                $this->applyWriteStrategy($strategy, $model, $action);
+            } catch(\Exception $e) {
+                // If this was the first strategy (aka primary) that failed, check 
+                // to see if there is a backup strategy. If so, try it.
+                if($index === 0 && $this->_primary_write_backup_strategy) {
+                    $this->applyWriteStrategy($this->_primary_write_backup_strategy, $model, $action);
+                } else {
+                    throw $e;
+                }
+            }
         }
+    }
+    
+    /**
+     * Perform an individual write to a strategy.
+     * 
+     * @param \Octopus\Strategy\AbstractStrategy $strategy
+     * @param AbstractModel $model
+     * @param string $action
+     * @throws \Exception
+     * @return void
+     */
+    protected function applyWriteStrategy(\Octopus\Strategy\AbstractStrategy $strategy, AbstractModel $model, $action) 
+    {
+        if($action == self::METHOD_DELETE) {
+            $worked = $strategy->$action($model->getId());
+        } else {
+            $worked = $strategy->$action($model->toArray());        
+        }
+    }
+    
+    /**
+     * Indicate what strategy, if any, should be used if the first write strategy 
+     * throws an exception.
+     * 
+     * @param \Octopus\Strategy\AbstractStrategy $strategy
+     */
+    public function setPrimaryWriteBackupStrategy(\Octopus\Strategy\AbstractStrategy $strategy)
+    {
+        $this->_primary_write_backup_strategy = $strategy;
     }
     
 }

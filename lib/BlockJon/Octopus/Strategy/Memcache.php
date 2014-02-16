@@ -59,7 +59,7 @@ class Memcache extends AbstractStrategy
      * Save some string datas into a cache record
      *
      * @param array Data to cache
-     * @return boolean true if no problem
+     * @return boolean
      */
     public function create($data_array)
     {
