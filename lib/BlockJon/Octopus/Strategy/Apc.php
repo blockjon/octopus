@@ -55,7 +55,7 @@ class Apc extends AbstractStrategy
      * @param array Data to cache
      * @return boolean
      */
-    public function create($data_array)
+    public function create(array $data_array)
     {
         $lifetime = 60; // todo: set this to something meaningful
         $id = $data_array['id'];
@@ -69,7 +69,7 @@ class Apc extends AbstractStrategy
      * @param array Data to cache
      * @return boolean true if no problem
      */
-    public function update($data_array)
+    public function update(array $data_array)
     {
         $lifetime = 60; // todo: set this to something meaningful
         $id = $data_array['id'];

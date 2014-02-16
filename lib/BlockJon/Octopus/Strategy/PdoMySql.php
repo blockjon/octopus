@@ -96,7 +96,7 @@ class PdoMySql extends AbstractStrategy
      * @param array Data to cache
      * @return boolean true if no problem
      */
-    public function update($data_array)
+    public function update(array $data_array)
     {
         $setTemplate = '';
         $dictionary = array();

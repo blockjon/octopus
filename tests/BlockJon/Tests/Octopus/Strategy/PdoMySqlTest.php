@@ -25,6 +25,7 @@ class PdoMySqlTest extends AbstractStrategyTest
         $fieldDefinitions = substr($fieldDefinitions, 0, strlen($fieldDefinitions)-1);
         $sql = "CREATE TABLE `" . $config['table'] . "` ($fieldDefinitions);";
         $error_code = $this->_strategy->getPdoHandle()->exec($sql);
+        parent::setUp();
     }
     
     public function tearDown() 
@@ -32,6 +33,7 @@ class PdoMySqlTest extends AbstractStrategyTest
         $config = BookDao::getConfig('pdomysql');
         $sql = "DROP TABLE `" . $config['table'] . "`;";
         $error_code = $this->_strategy->getPdoHandle()->exec($sql);
+        parent::tearDown();
     }
     
     public function testCanInstantiatePdoStrategy()

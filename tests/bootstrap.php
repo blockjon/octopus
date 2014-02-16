@@ -1,5 +1,7 @@
 <?php
 
+error_reporting(E_ALL ^ E_NOTICE);
+
 // Load additional dependencies provided by composer.
 if (!file_exists($file = __DIR__.'/../vendor/autoload.php')) {
     throw new RuntimeException('Install dependencies to run test suite.');

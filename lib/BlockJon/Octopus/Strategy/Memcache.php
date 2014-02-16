@@ -61,7 +61,7 @@ class Memcache extends AbstractStrategy
      * @param array Data to cache
      * @return boolean
      */
-    public function create($data_array)
+    public function create(array $data_array)
     {
         $id = $data_array['id'];
         $result = $this->_mch->set($id, $data_array, \MEMCACHE_COMPRESSED, $this->_expire);
@@ -74,7 +74,7 @@ class Memcache extends AbstractStrategy
      * @param array Data to cache
      * @return boolean true if no problem
      */
-    public function update($data_array)
+    public function update(array $data_array)
     {
         $id = $data_array['id'];
         $result = $this->_mch->set($id, $data_array, \MEMCACHE_COMPRESSED, $this->_expire);
