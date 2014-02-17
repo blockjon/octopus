@@ -1,6 +1,6 @@
 {
     "name": "blockjon/octopus",
-    "description": "Ventor neutral data persistence for PHP",
+    "description": "Ventor-neutral data persistence and resiliency API for PHP",
     "license": "MIT",
     "require" : {
         "rhumsaa/uuid": "2.7.0",
