@@ -4,7 +4,7 @@ Octopus
 =======
 With one API, you can Create, Read, Update and Delete models. Octopus lets you decide where and how your models are stored. It supports any data storage format PHP can interact with such as databases, files, caches, queues, REST and more. 
 
-Octopus lets you customize different strategies for reading data and writing. Each of your models can have different strategies. For example, you can easily customize Octopus to save your "User" models into both MySQL and Memcache during a write, but during a read, to first try to read from Memcache and then use the database as fallback.
+Octopus lets you customize different strategies for reading data and writing data. Each of your models can have different strategies. For example, you can easily customize Octopus to save your "User" models into both MySQL and Memcache during a write, but during a read, to first try to read from Memcache and then use the database as fallback.
 
 When writing data, Octopus can be set to automatically use a different strategy if an important one fails. For example, if your database throws a deadlock exception while executing an insert statement, Octopus can be set to elegantly respond by automatically retrying the insert with a different write strategy such as a queue resulting in no data loss.
 
@@ -28,10 +28,6 @@ $dao->update($book);
 // Delete an object
 $dao->delete($book);
 ```
-
-Octopus works by allowing you to customize each "DAO" (data access object) with strategies for reading from and writing to your backends. You can register multiple strategies for reading and writing your models.
-
-This strategy pattern allows Octopus projects to more easily scale and also be tolerant to backend outages. 
 
 Example Use Cases
 ------------------
