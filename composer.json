@@ -1,4 +1,6 @@
 {
+    "name": "blockjon/octopus",
+    "description": "Ventor neutral data persistence for PHP",
     "require" : {
         "rhumsaa/uuid": "2.7.0",
         "doctrine/common": "v2.4.1"
