@@ -6,7 +6,7 @@ With one API, you can Create, Read, Update and Delete models. Octopus lets you d
 
 Octopus lets you customize different strategies for reading data and writing. Each of your models can have different strategies. For example, you can easily customize Octopus to save your "User" models into both MySQL and Memcache during a write, but during a read, to first try to read from Memcache and then use the database as fallback.
 
-When writing data, Octopus can be set to automatically use a different strategy if an important one fails. For example, if your database throws a deadlock error when you try to insert an order in your website, the order infrormation can instead be set to write to a queue.
+When writing data, Octopus can be set to automatically use a different strategy if an important one fails. For example, if your database throws a deadlock exception while executing an insert statement, Octopus can be set to elegantly respond by using a different write strategy such as writing to a queue such that no critical information is lost.
 
 Note: This is under active development. Will not be ready for production use until June, 2014.
 
