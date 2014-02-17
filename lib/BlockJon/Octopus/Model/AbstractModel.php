@@ -2,31 +2,66 @@
 
 namespace Octopus\Model;
 
+use Doctrine\Common\Annotations\AnnotationReader,
+    Doctrine\Common\Annotations\AnnotationRegistry,
+    Octopus\Annotation as Octopus;
+
 abstract class AbstractModel {
 
-    protected $_id;
+    
+    private $_annotationReader;
+    
+    public function __construct()
+    {
+        $this->_annotationReader = new AnnotationReader();
+        AnnotationRegistry::registerAutoloadNamespace("Octopus\Annotation", realpath(dirname(__FILE__).'/../../'));
+    }
+    
+    /**
+     * @Octopus\PropertyName
+     */
+    protected $id;
 
-//    
-//    /**
-//     * Convert object into an associative array.
-//     * 
-//     * @return array
-//     */
-//    abstract public function toArray();
-//    
-//    /**
-//     * Given an array of data from the data store, re-hydrates the model.
-//     */
-//    abstract public function hydrate(array $data);
+    /**
+     * Get the list of properites of this object.
+     * 
+     * "[Semantical Error] The annotation "@Octopus\Annotation\Foo" in property 
+     * Models\Book::$title does not exist, or could not be auto-loaded."
+     * 
+     * @param \Doctrine\Common\Annotations\AnnotationReader $reader
+     * @return array
+     */
+    private function getFieldNames(AnnotationReader $reader) 
+    {
+        $fieldNames = array();
+        
+        $reflectionObject = new \ReflectionObject($this);
+        /**
+         * @var $property \ReflectionProperty 
+         */
+        foreach($reflectionObject->getProperties() as $property) {
+            $annotation = $reader->getPropertyAnnotation($property, 'Octopus\Annotation\PropertyName');
+            if($annotation) {
+                $fieldNames[] = $property->getName();
+            }
+        }
+        return $fieldNames;
+    }
 
     public function toArray() {
         $result = array(
             'id' => $this->getId(),
         );
+        
+        // Get all of the fields which are property names.
+        $fields = $this->getFieldNames($this->_annotationReader);
+        
         // Detect all of the keys and pull their names and values into an 
         // associative array and return it.
-        $result['title'] = $this->title;
-        $result['author'] = $this->author;
+        foreach($fields as $thisFieldName) {
+            $result[$thisFieldName] = $this->$thisFieldName;        
+        }
+        
         return $result;
     }
 
@@ -34,20 +69,22 @@ abstract class AbstractModel {
      * @param array $data
      */
     public function hydrate(array $data) {
-        // Detect all of the keys and pull their names and values into an 
-        // associative array and return it.
-        $this->setId($data['id']);
         
-        $this->title = $data['title'];
-        $this->author = $data['author'];
+        // Get all of the fields which are property names.
+        $fields = $this->getFieldNames($this->_annotationReader);
+        
+        foreach($fields as $thisFieldName) {
+            $this->$thisFieldName = $data[$thisFieldName];       
+        }
+
     }
 
     public function getId() {
-        return $this->_id;
+        return $this->id;
     }
 
     public function setId($id) {
-        $this->_id = $id;
+        $this->id = $id;
         return $this;
     }
 
