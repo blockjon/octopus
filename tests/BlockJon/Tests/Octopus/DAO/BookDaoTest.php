@@ -2,10 +2,7 @@
 
 namespace BlockJon\Tests\Octopus\DAO;
 
-use Daos\BookDao,
-    Models\Book,
-    \Octopus\Strategy\JsonJournal,
-    \Octopus\Strategy\Apc;
+use Daos\BookDao;
 
 class BookDaoTest extends \BlockJon\Tests\OctopusTestCase
 {

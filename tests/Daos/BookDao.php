@@ -2,7 +2,8 @@
 
 namespace Daos;
 
-use Octopus\DAO\AbstractDAO;
+use Octopus\DAO\AbstractDAO,
+    Models\Book;
 
 class BookDao extends AbstractDAO
 {
@@ -35,5 +36,13 @@ class BookDao extends AbstractDAO
             'expire' => 0
         ),
     );
+    
+    /**
+     * @return \Models\Book
+     */
+    static public function getModel()
+    {
+        return new Book;
+    }
     
 }

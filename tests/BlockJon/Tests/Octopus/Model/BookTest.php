@@ -24,4 +24,20 @@ class BookTest extends \BlockJon\Tests\OctopusTestCase
         $this->assertEquals($author, $book->getAuthor());
     }
     
+    public function testToArray()
+    {
+        $book = new Book;
+        $title = 'test title';
+        $author = 'test author';
+        $book->setTitle($title);
+        $book->setAuthor($author);
+        $result = $book->toArray();
+        $this->assertTrue(is_array($result));
+        $this->assertTrue(array_key_exists('id', $result));
+        $this->assertTrue(isset($result['title']));
+        $this->assertTrue(isset($result['author']));
+        $this->assertEquals($title, $result['title']);
+        $this->assertEquals($author, $result['author']);
+    }
+    
 }

@@ -10,25 +10,6 @@ class Book extends AbstractModel
     protected $title;
     protected $author;
     
-    public function toArray() 
-    {
-        return array(
-            'id' => $this->getId(),
-            'title' => $this->getTitle(),
-            'author' => $this->getAuthor(),
-        );
-    }
-    
-    /**
-     * @param array $data
-     */
-    public function hydrate(array $data) 
-    {
-       $this->setId($data['id']);
-       $this->setAuthor($data['author']);
-       $this->setTitle($data['title']);       
-    }
-    
     public function getTitle()
     {
         return $this->title;
@@ -50,7 +31,5 @@ class Book extends AbstractModel
         $this->author = $author;
         return $this;
     }
-
-
 
 }
