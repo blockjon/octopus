@@ -2,7 +2,11 @@ Master: [![Build Status](https://secure.travis-ci.org/blockjon/octopus.png?branc
 
 Octopus
 =======
-Octopus is a vendor neutral data access API for PHP. You can Create, Read, Update and Delete models using any database or other type of data storage fromat such as files, caches, and queues. Instead of tightly coupling your project to one specific vendor library such as MySQL or Mongo, consider using Octopus instead, a flexible alternative.
+With one API, you can Create, Read, Update and Delete models. Octopus lets you decide where and how your models are stored. It supports any data storage format PHP can interact with such as databases, files, caches, queues, REST and more. 
+
+Octopus lets you customize different strategies for reading data and writing. Each of your models can have different strategies. For example, you can easily customize Octopus to save your "User" models into both MySQL and Memcache during a write, but during a read, to first try to read from Memcache and then use the database as fallback.
+
+When writing data, Octopus can be set to automatically use a different strategy if an important one fails. For example, if your database throws a deadlock error when you try to insert an order in your website, the order infrormation can instead be set to write to a queue.
 
 Note: This is under active development. Will not be ready for production use until June, 2014.
 
