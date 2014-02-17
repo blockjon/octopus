@@ -1,7 +1,7 @@
 #!/bin/sh
 
 install_memcache() {
-    if [ "$(expr "$TRAVIS_PHP_VERSION" "<" "5.5")" -eq 1 ]; then
+    if [ "$(expr "$TRAVIS_PHP_VERSION" ">=" "5.5")" -eq 1 ]; then
 MEMCACHE_VERSION="2.2.7"
         wget "http://pecl.php.net/get/memcache-$MEMCACHE_VERSION.tgz" &&
         tar -zxf "memcache-$MEMCACHE_VERSION.tgz" &&
