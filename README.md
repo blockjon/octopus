@@ -2,7 +2,7 @@ Master: [![Build Status](https://secure.travis-ci.org/blockjon/octopus.png?branc
 
 Octopus
 =======
-Octopus lets you decide where and how your models are stored. It supports virtually any data storage format that PHP can interact with such as databases, files, caches, queues, REST and more. 
+Octopus allows you to customize where and how your models are stored. It supports virtually any data storage format that PHP can interact with such as databases, files, caches, queues, REST and more. 
 
 Octopus lets you customize different strategies for reading data and writing data. Each of your models can have different strategies. For example, you can easily customize Octopus to save your "User" models into both MySQL and Memcache during a write, but during a read, to first try to read from Memcache and then use the database as fallback.
 
