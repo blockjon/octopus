@@ -2,11 +2,11 @@ Master: [![Build Status](https://secure.travis-ci.org/blockjon/octopus.png?branc
 
 Octopus
 =======
-With one API, you can Create, Read, Update and Delete models. Octopus lets you decide where and how your models are stored. It supports any data storage format PHP can interact with such as databases, files, caches, queues, REST and more. 
+Octopus lets you decide where and how your models are stored. It supports virtually any data storage format that PHP can interact with such as databases, files, caches, queues, REST and more. 
 
 Octopus lets you customize different strategies for reading data and writing data. Each of your models can have different strategies. For example, you can easily customize Octopus to save your "User" models into both MySQL and Memcache during a write, but during a read, to first try to read from Memcache and then use the database as fallback.
 
-When writing data, Octopus can be set to automatically use a different strategy if an important one fails. For example, if your database throws a deadlock exception while executing an insert statement, Octopus can be set to elegantly respond by automatically retrying the insert with a different write strategy such as a queue resulting in no data loss.
+When writing data, Octopus can be set to automatically use a different strategy if an important one fails. For example, if your database throws a deadlock exception while executing an insert statement, Octopus can be set to internally respond by automatically retrying the insert with a different write strategy such as a queue resulting in no data loss.
 
 Note: This is under active development. Will not be ready for production use until June, 2014.
 
