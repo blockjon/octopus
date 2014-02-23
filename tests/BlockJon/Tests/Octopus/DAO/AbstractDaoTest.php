@@ -2,7 +2,7 @@
 
 namespace BlockJon\Tests\Octopus\DAO;
 
-use Daos\BookDao,
+use Daos\Book as BookDao,
     Models\Book,
     Octopus\Strategy\PdoSqlite,
     Octopus\Strategy\Memcache;
@@ -25,7 +25,7 @@ class AbstractDaoTest extends \BlockJon\Tests\OctopusTestCase
         $r = array(
             $pdoSqliteStratgy,
         );
-        $bookDaoMock = $this->getMock('\Daos\BookDao', array('applyWriteStrategy'), array($w, $r));
+        $bookDaoMock = $this->getMock('\Daos\Book', array('applyWriteStrategy'), array($w, $r));
         $bookDaoMock->expects($this->exactly(2))
                     ->method('applyWriteStrategy');
         $bookDaoMock->create(new Book);

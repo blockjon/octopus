@@ -78,10 +78,15 @@ class PdoMySql extends AbstractStrategy
     public function create(array $data_array)
     {
         $fields = implode(',', $this->_config['columns']);
-        $values = array_values($data_array);
+        $values = array();
         $questionMarksArray = array();
-        foreach($data_array as $foo) {
+        foreach($this->_config['columns'] as $thisColumn) {
             $questionMarksArray[] = '?';
+            if(isset($data_array[$thisColumn])) {
+                $values[] = $data_array[$thisColumn];
+            } else {
+                $values[] = null;
+            }
         }
         $questionMarksString = implode(',', $questionMarksArray);        
         $sql = "INSERT INTO `" . $this->_config['table'] . "` ($fields) VALUES ($questionMarksString)";

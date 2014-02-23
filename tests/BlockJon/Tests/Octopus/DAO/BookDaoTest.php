@@ -2,7 +2,7 @@
 
 namespace BlockJon\Tests\Octopus\DAO;
 
-use Daos\BookDao;
+use Daos\Book as BookDao;
 
 class BookDaoTest extends \BlockJon\Tests\OctopusTestCase
 {
@@ -10,7 +10,7 @@ class BookDaoTest extends \BlockJon\Tests\OctopusTestCase
     public function testCanInstantiateBookDao()
     {
         $bookDao = new BookDao;
-        $this->assertEquals('Daos\BookDao', get_class($bookDao));
+        $this->assertEquals('Daos\Book', get_class($bookDao));
     }
     
 }

@@ -21,7 +21,17 @@ abstract class AbstractModel {
      * @Octopus\PropertyName
      */
     protected $id;
-
+    
+    /**
+     * @Octopus\PropertyName
+     */
+    protected $dateCreated;
+    
+    /**
+     * @Octopus\PropertyName
+     */
+    protected $dateLastUpdated;
+    
     /**
      * Get the list of properites of this object.
      * 
@@ -85,6 +95,28 @@ abstract class AbstractModel {
 
     public function setId($id) {
         $this->id = $id;
+        return $this;
+    }
+    
+    public function getDateCreated()
+    {
+        return $this->dateCreated;
+    }
+
+    public function getDateLastUpdated()
+    {
+        return $this->dateLastUpdated;
+    }
+
+    public function setDateCreated($dateCreated)
+    {
+        $this->dateCreated = $dateCreated;
+        return $this;
+    }
+
+    public function setDateLastUpdated($dateLastUpdated)
+    {
+        $this->dateLastUpdated = $dateLastUpdated;
         return $this;
     }
 

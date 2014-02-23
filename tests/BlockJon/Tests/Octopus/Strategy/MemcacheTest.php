@@ -3,7 +3,7 @@
 namespace BlockJon\Tests\Octopus\Strategy;
 
 use Octopus\Strategy\Memcache,
-    Daos\BookDao;
+    Daos\Book as BookDao;
 
 class MemcacheTest extends AbstractStrategyTest
 {

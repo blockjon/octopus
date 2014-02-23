@@ -18,6 +18,27 @@ abstract class AbstractDAO implements GetModelInterface
     
     protected $_primary_write_backup_strategy;
     
+    static $_baseConfig = array(
+        'pdosqlite' => array(
+            'columns' => array(
+            ),
+            'table' => null
+        ),
+        'pdomysql' => array(
+            'columns' => array(
+            ),
+            'table' => null,
+            'dbname' => 'test',
+            'username' => '',
+            'password' => '',
+        ),
+        'memcache' => array(
+            'host' => 'localhost',
+            'port' => '11211',
+            'expire' => 0
+        ),
+    );
+    
     /**
      * Returns an associative array config for a backend.
      * @param string $key
@@ -25,8 +46,12 @@ abstract class AbstractDAO implements GetModelInterface
      */
     public static function getConfig($key) 
     {
-        $config = static::$_config;
-        return $config[$key];
+        // Load the core config.
+        $baseConfig = self::$_baseConfig;
+        // Merge in dao specific config.
+        $daoConfig = static::$_config;
+        $mergedConfig = array_merge($baseConfig, $daoConfig);
+        return $mergedConfig[$key];
     }
     
     /**
@@ -48,10 +73,15 @@ abstract class AbstractDAO implements GetModelInterface
      */
     public function create(AbstractModel $model)
     {
+        $currentTime = time();
         if ($model->getId() === null) {
             $uuid = (string)Uuid::uuid5(Uuid::NAMESPACE_DNS, uniqid('',true));
             $model->setId($uuid);
         }
+        if($model->getDateCreated() === null) {
+            $model->setDateCreated($currentTime);
+        }
+        $model->setDateLastUpdated($currentTime);
         // Loop over each of the write strategies executing the create method.
         $this->writeDataChange($model, self::METHOD_CREATE);
     }
@@ -88,6 +118,8 @@ abstract class AbstractDAO implements GetModelInterface
      */
     public function update(AbstractModel $model)
     {
+        $model->setDateLastUpdated(time());
+        
         // Loop over each of the write strategies executing the create method.
         $this->writeDataChange($model, self::METHOD_UPDATE);
     }
@@ -156,6 +188,33 @@ abstract class AbstractDAO implements GetModelInterface
     public function setPrimaryWriteBackupStrategy(\Octopus\Strategy\AbstractStrategy $strategy)
     {
         $this->_primary_write_backup_strategy = $strategy;
+    }
+    
+    /**
+     * @return \Models\Book
+     */
+    static public function getModel()
+    {
+        
+        // Explode the model's namespace.
+        $namespaceArray = explode('\\', get_called_class());
+        
+        // Get the name of the model.
+        $class = array_pop($namespaceArray);
+        
+        // Build out the path to where the daos are.
+        array_pop($namespaceArray);
+        array_push($namespaceArray, 'Models');
+        
+        $daoNamespace = implode(',', $namespaceArray);
+        
+        // Instantiate the dao.
+        $fqn = $daoNamespace . '\\' . $class;
+        
+        $model = new $fqn();
+        
+        return $model;
+        
     }
     
 }
