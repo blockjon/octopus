@@ -1,7 +1,7 @@
 <?php
 
 use Repositories\Book as BookRepository,
-    Daos\BookDao,
+    Daos\Book as BookDao,
     Models\Book;
 
 class AbstractRepositoryTest extends \BlockJon\Tests\OctopusTestCase
@@ -30,7 +30,7 @@ class AbstractRepositoryTest extends \BlockJon\Tests\OctopusTestCase
         $r = array(
             $strategyB
         );
-        $bookDao = new \Daos\BookDao($w, $r);
+        $bookDao = new BookDao($w, $r);
         
         // Save 7 models.
         for($i=0; $i < 7; $i++) {

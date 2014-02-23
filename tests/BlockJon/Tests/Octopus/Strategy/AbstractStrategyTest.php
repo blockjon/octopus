@@ -3,7 +3,7 @@
 namespace BlockJon\Tests\Octopus\Strategy;
 
 use Octopus\Strategy\PdoSqlite,
-    Daos\BookDao,
+    Daos\Book as BookDao,
     Models\Book;
 
 abstract class AbstractStrategyTest extends \BlockJon\Tests\OctopusTestCase
