@@ -16,24 +16,24 @@ The Octopus API Is Simple
 // Get the dao manager.
 $daoManager = new DaoManager();
 
-// Create a new object
+// Create a new model.
 $book = new Book();
 
 // Get the book dao.
 $dao = $daoManager->getDao($book);
 
-// Create a new book.
+// Set the properties of your model.
 $book->setTitle('A tale of two cities');
 $dao->create($book);
 
-// Retrieve an object
+// Retrieve a model.
 $book = $dao->read($id);
 
-// Update an object
+// Update a model.
 $book->setTitle('A Tale of Two Cities');
 $dao->update($book);
 
-// Delete an object
+// Delete a model.
 $dao->delete($book);
 ```
 
