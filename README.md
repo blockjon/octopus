@@ -14,10 +14,10 @@ The Octopus API Is Simple
 -------------
 ```
 // Get the dao manager.
-$daoManager = new DaoManager();
+$daoManager = new DaoManager;
 
 // Create a new model.
-$book = new Book();
+$book = new Book;
 
 // Get the book dao.
 $dao = $daoManager->getDao($book);
