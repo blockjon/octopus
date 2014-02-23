@@ -2,15 +2,39 @@
 
 namespace Octopus; 
 
-use Octopus\Model\AbstractModel,
-    Octopus\DAO\AbstractDAO;
+use Octopus\Model\AbstractModel;
 
 class DaoManager
 {
     
+    protected $_defaultReadStrategies = array();
+    protected $_defaultWriteStrategies = array();
+    protected $_primaryWriteBackupStrategy = null;
+    
     public function __construct() 
     {
         
+    }
+    
+    public function setPrimaryWriteBackupStrategy($strategy) 
+    {
+        $this->_primaryWriteBackupStrategy = $strategy;
+    }
+    
+    /**
+     * @param array $strategies
+     */
+    public function setDefaultReadStrategies(array $strategies)
+    {
+        $this->_defaultReadStrategies = $strategies;
+    }
+    
+    /**
+     * @param array $strategies
+     */
+    public function setDefaultWriteStrategies(array $strategies)
+    {
+        $this->_defaultWriteStrategies = $strategies;
     }
     
     /**
@@ -39,8 +63,12 @@ class DaoManager
         // Instantiate the dao.
         $fqn = $daoNamespace . '\\' . $class;
         
-        $dao = new $fqn();
-
+        $dao = new $fqn($this->_defaultWriteStrategies, $this->_defaultReadStrategies);
+        
+        if($this->_primaryWriteBackupStrategy) {
+            $dao->setPrimaryWriteBackupStrategy($this->_primaryWriteBackupStrategy);
+        }
+        
         return $dao;
         
     }

@@ -11,6 +11,8 @@ class Book extends AbstractDAO
         'pdosqlite' => array(
             'columns' => array(
                 'id',
+                'dateCreated',
+                'dateLastUpdated',
                 'title',
                 'author',
             ),
@@ -19,6 +21,8 @@ class Book extends AbstractDAO
         'pdomysql' => array(
             'columns' => array(
                 'id',
+                'dateCreated',
+                'dateLastUpdated',
                 'title',
                 'author',
             ),

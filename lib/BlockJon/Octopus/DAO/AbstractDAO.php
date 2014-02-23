@@ -73,10 +73,15 @@ abstract class AbstractDAO implements GetModelInterface
      */
     public function create(AbstractModel $model)
     {
+        $currentTime = time();
         if ($model->getId() === null) {
             $uuid = (string)Uuid::uuid5(Uuid::NAMESPACE_DNS, uniqid('',true));
             $model->setId($uuid);
         }
+        if($model->getDateCreated() === null) {
+            $model->setDateCreated($currentTime);
+        }
+        $model->setDateLastUpdated($currentTime);
         // Loop over each of the write strategies executing the create method.
         $this->writeDataChange($model, self::METHOD_CREATE);
     }
@@ -113,6 +118,8 @@ abstract class AbstractDAO implements GetModelInterface
      */
     public function update(AbstractModel $model)
     {
+        $model->setDateLastUpdated(time());
+        
         // Loop over each of the write strategies executing the create method.
         $this->writeDataChange($model, self::METHOD_UPDATE);
     }
