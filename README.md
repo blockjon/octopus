@@ -13,8 +13,16 @@ Note: This is under active development. Will not be ready for production use unt
 The Octopus API Is Simple
 -------------
 ```
+// Get the dao manager.
+$daoManager = new DaoManager();
+
 // Create a new object
 $book = new Book();
+
+// Get the book dao.
+$dao = $daoManager->getDao($book);
+
+// Create a new book.
 $book->setTitle('A tale of two cities');
 $dao->create($book);
 
