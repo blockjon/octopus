@@ -2,13 +2,13 @@ Master: [![Build Status](https://secure.travis-ci.org/blockjon/octopus.png?branc
 
 Octopus
 =======
-Octopus allows you to customize where and how your models are stored. It supports virtually any data storage format that PHP can interact with such as databases, files, caches, queues, REST and more. 
+With an ORM-style API, Octopus lets you create complex strategies for reading and writing models. This pattern is useful to help you create a system which is tolerant to backend database failures.
 
-Octopus lets you customize different strategies for reading data and writing data. Each of your models can have different strategies. For example, you can easily customize Octopus to save your "User" models into both MySQL and Memcache during a write, but during a read, to first try to read from Memcache and then use the database as fallback.
+For example, you can easily customize Octopus to save your "User" model into both MySQL and Memcache during a write, but during a read, to first try to read from Memcache and then use the database as fallback.
 
-When writing data, Octopus can be set to automatically use a different strategy if an important one fails. For example, if your database throws a deadlock exception while executing an insert statement, Octopus can be set to internally respond by automatically retrying the insert with a different write strategy such as a queue resulting in no data loss.
+When writing data, Octopus can be set to circuit break to a fallback strategy if a primary data store fails. For example, if your database stops responding, Octopus could be set to instead write your model to Memcache and a queue (to be inserted later when the database works). If you set your reads to first observe Memcache, your system stays up through a database outage.
 
-Note: This is under active development. Will not be ready for production use until June, 2014.
+Note: This is under occasional development.
 
 The Octopus API Is Simple
 -------------
@@ -24,9 +24,11 @@ $dao = $daoManager->getDao($book);
 
 // Set the properties of your model.
 $book->setTitle('A tale of two cities');
+
+// Create a model.
 $dao->create($book);
 
-// Retrieve a model.
+// Load a model.
 $book = $dao->read($id);
 
 // Update a model.
