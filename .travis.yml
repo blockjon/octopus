@@ -2,10 +2,11 @@ language: php
 services:
   - memcached
 php:
+  - "5.5"
   - "5.4"
   - "5.3"
 before_script:
- - ./tests/travis/composerinstall.sh
+ - composer install
  - ./tests/travis/memcache-setup.sh
  - ./tests/travis/apc-setup.sh
 
