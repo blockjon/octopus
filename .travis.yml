@@ -5,6 +5,7 @@ php:
   - "5.4"
   - "5.3"
 before_script:
+ - ./tests/travis/composerinstall.sh
  - ./tests/travis/memcache-setup.sh
  - ./tests/travis/apc-setup.sh
 
