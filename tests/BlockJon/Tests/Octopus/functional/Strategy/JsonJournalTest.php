@@ -1,13 +1,12 @@
 <?php
 
-namespace BlockJon\Tests\Octopus\Strategy;
+namespace BlockJon\Tests\Octopus\Functional\Strategy;
 
 use Octopus\Strategy\JsonJournal;
 
 class JsonJournalTest extends AbstractStrategyTest
 {
-    
-    public function setUp() 
+    public function setUp()
     {
         $this->_strategy = new JsonJournal(array('streamorurl' => fopen('php://memory', 'w+')));
     }
@@ -38,5 +37,4 @@ class JsonJournalTest extends AbstractStrategyTest
         );
         $this->_testGoldenCPath($write_strategies, $read_strategies);
     }
-    
 }

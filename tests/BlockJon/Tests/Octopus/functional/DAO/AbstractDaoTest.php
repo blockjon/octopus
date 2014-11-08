@@ -1,15 +1,15 @@
 <?php
 
-namespace BlockJon\Tests\Octopus\DAO;
+namespace BlockJon\Tests\Octopus\Functional\DAO;
 
 use Daos\Book as BookDao,
     Models\Book,
     Octopus\Strategy\PdoSqlite,
-    Octopus\Strategy\Memcache;
+    Octopus\Strategy\Memcache,
+    BlockJon\Tests\Octopus\Functional\FunctionalTestCase as FunctionalTestCase;
 
-class AbstractDaoTest extends \BlockJon\Tests\OctopusTestCase
+class AbstractDaoTest extends FunctionalTestCase
 {
-    
     public function testAllWriteStrategiesUsedDuringMultiStrategyWrite()
     {
         $pdoSqliteStratgy = new PdoSqlite(

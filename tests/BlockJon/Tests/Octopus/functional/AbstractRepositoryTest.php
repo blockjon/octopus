@@ -1,19 +1,20 @@
 <?php
 
+namespace BlockJon\Tests\Octopus\Functional;
+
 use Repositories\Book as BookRepository,
     Daos\Book as BookDao,
     Models\Book;
 
-class AbstractRepositoryTest extends \BlockJon\Tests\OctopusTestCase
+class AbstractRepositoryTest extends FunctionalTestCase
 {
-    
     public function testCanInstantiate()
     {
         $bookRepository = new BookRepository(new BookDao());
         $this->assertInstanceOf('Repositories\Book', $bookRepository);
     }
     
-    public function testCanIterateOverResultsUsingRespository() 
+    public function testCanIterateOverResultsUsingRespository()
     {
         $pdoConfig = BookDao::getConfig('pdosqlite');
         $strategyA = new \Octopus\Strategy\PdoSqlite($pdoConfig);

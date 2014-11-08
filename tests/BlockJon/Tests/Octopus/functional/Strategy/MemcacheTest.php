@@ -1,6 +1,6 @@
 <?php
 
-namespace BlockJon\Tests\Octopus\Strategy;
+namespace BlockJon\Tests\Octopus\Functional\Strategy;
 
 use Octopus\Strategy\Memcache,
     Daos\Book as BookDao;

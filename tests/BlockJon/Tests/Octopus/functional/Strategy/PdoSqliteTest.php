@@ -1,23 +1,22 @@
 <?php
 
-namespace BlockJon\Tests\Octopus\Strategy;
+namespace BlockJon\Tests\Octopus\Functional\Strategy;
 
-use Octopus\Strategy\PdoSqlite,
-    Daos\Book as BookDao;
+use Octopus\Strategy\PdoSqlite;
+use Daos\Book as BookDao;
 
 class PdoSqliteTest extends AbstractStrategyTest
 {
-    
     protected $_dbh;
     
-    public function setUp() 
+    public function setUp()
     {
         $config = BookDao::getConfig('pdosqlite');
         $this->_strategy = new PdoSqlite(
             $config
         );
         $fieldDefinitions = '';
-        foreach($config['columns'] as $field) {
+        foreach ($config['columns'] as $field) {
             $fieldDefinitions .= "$field varchar(255), ";
         }
         $fieldDefinitions = rtrim($fieldDefinitions);
@@ -47,5 +46,4 @@ class PdoSqliteTest extends AbstractStrategyTest
         );
         $this->_testGoldenCrudPath($write_strategies, $read_strategies);
     }
-
 }

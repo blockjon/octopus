@@ -1,10 +1,12 @@
 <?php
 
-namespace BlockJon\Tests\Octopus\Model;
+namespace BlockJon\Tests\Octopus\Unit\Model;
+
+use \BlockJon\Tests\OctopusTestCase;
 
 use Models\Book;
 
-class BookTest extends \BlockJon\Tests\OctopusTestCase
+class BookTest extends OctopusTestCase
 {
     
     public function testCanInstantiateBook()
@@ -39,5 +41,4 @@ class BookTest extends \BlockJon\Tests\OctopusTestCase
         $this->assertEquals($title, $result['title']);
         $this->assertEquals($author, $result['author']);
     }
-    
 }

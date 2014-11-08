@@ -2,12 +2,11 @@
 
 namespace Models;
 
-use Octopus\Model\AbstractModel,
-    Octopus\Annotation as Octopus;
+use Octopus\Model\AbstractModel;
+use Octopus\Annotation as Octopus;
 
 class Book extends AbstractModel
 {
-    
     /**
      * @Octopus\PropertyName
      */
@@ -39,5 +38,4 @@ class Book extends AbstractModel
         $this->author = $author;
         return $this;
     }
-
 }
