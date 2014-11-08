@@ -22,18 +22,19 @@ class PdoMySql extends AbstractStrategy
         if (!extension_loaded('pdo_mysql')) {
             throw new \Exception('The pdo_mysql extension must be loaded for using this strategy.');
         }
-        $dbhost = 'root';
-        $dbname = '';
-        $username = '';
+        $dbhost = '';
+        $dbname = 'octopustest';
+        $username = 'root';
         $password = '';
-        $this->_dbh = new \PDO('mysql:host=' . $dbhost. ';dbname=' . $dbname . ';charset=utf8', $username, $password);
+        $handle = new \PDO('mysql:host=' . $dbhost. ';dbname=' . $dbname . ';charset=utf8', $username, $password);
+        $this->_dbh = $handle;
         parent::__construct($config);
     }
     
     /**
      * @return \PDO
      */
-    public function getPdoHandle() 
+    public function getPdoHandle()
     {
         return $this->_dbh;
     }
