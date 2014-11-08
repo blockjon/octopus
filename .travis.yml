@@ -7,4 +7,4 @@ before_script:
  - composer install
  - ./tests/travis/memcache-setup.sh
  - ./tests/travis/apc-setup.sh
-
+ - mysql -e 'create database octopustest;'
