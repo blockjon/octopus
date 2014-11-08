@@ -18,17 +18,20 @@ class PdoMySqlTest extends AbstractStrategyTest
             return;
         }
         $config = BookDao::getConfig('pdomysql');
-        try {
-            $this->_strategy = new PdoMySql(
-                $config
-            );
-        } catch (\Exception $e) {
-            if ($e->getCode() == 2002) {
-                // Can't connect to mysql.
-                $this->markTestSkipped($e->getMessage());
-                return;
-            }
-        }
+        $this->_strategy = new PdoMySql(
+            $config
+        );
+//        try {
+//            $this->_strategy = new PdoMySql(
+//                $config
+//            );
+//        } catch (\Exception $e) {
+//            if ($e->getCode() == 2002) {
+//                // Can't connect to mysql.
+//                $this->markTestSkipped($e->getMessage());
+//                return;
+//            }
+//        }
         $error_code = $this->_strategy->getPdoHandle()->exec("drop table `" . $config['table'] . "` if exists;");
         $fieldDefinitions = '';
         foreach ($config['columns'] as $field) {
