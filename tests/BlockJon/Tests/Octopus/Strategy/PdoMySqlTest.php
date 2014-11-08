@@ -2,8 +2,8 @@
 
 namespace BlockJon\Tests\Octopus\Strategy;
 
-use Octopus\Strategy\PdoMySql,
-    Daos\Book as BookDao;
+use \Octopus\Strategy\PdoMySql;
+use \Daos\Book as BookDao;
 
 class PdoMySqlTest extends AbstractStrategyTest
 {

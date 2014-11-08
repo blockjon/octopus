@@ -22,8 +22,8 @@ class PdoMySql extends AbstractStrategy
         if (!extension_loaded('pdo_mysql')) {
             throw new \Exception('The pdo_mysql extension must be loaded for using this strategy.');
         }
-        $dbhost = 'localhost';
-        $dbname = 'test';
+        $dbhost = 'root';
+        $dbname = '';
         $username = '';
         $password = '';
         $this->_dbh = new \PDO('mysql:host=' . $dbhost. ';dbname=' . $dbname . ';charset=utf8', $username, $password);
