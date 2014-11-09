@@ -2,19 +2,16 @@
 
 namespace Models;
 
-use Octopus\Model\AbstractModel;
-use Octopus\Annotation as Octopus;
+use Octopus as Octopus;
 
-class Book extends AbstractModel
+class Book
 {
+
     /**
-     * @Octopus\PropertyName
+     * @Octopus\Annotations\Id
      */
     protected $title;
-    
-    /**
-     * @Octopus\PropertyName
-     */
+
     protected $author;
     
     public function getTitle()

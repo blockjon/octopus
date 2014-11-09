@@ -2,35 +2,27 @@
 
 namespace Octopus\DAO;
 
-use Octopus\Model\AbstractModel,
-    Rhumsaa\Uuid\Uuid;    
+use Octopus\Model\AbstractModel;
+use Rhumsaa\Uuid\Uuid;
+use Octopus\Strategy\AbstractStrategy;
 
 abstract class AbstractDAO implements GetModelInterface
 {
-    
     const METHOD_CREATE = 'create';
     const METHOD_READ = 'read';
     const METHOD_UPDATE = 'update';
     const METHOD_DELETE = 'delete';
     
-    private $_write_strategies = array();
-    private $_read_strategies = array();
+    private $writeStrategies = array();
+    private $readStrategies = array();
     
-    protected $_primary_write_backup_strategy;
+    protected $primaryWriteBackupStrategy;
     
-    static $_baseConfig = array(
+    static protected $baseConfig = array(
         'pdosqlite' => array(
             'columns' => array(
             ),
             'table' => null
-        ),
-        'pdomysql' => array(
-            'columns' => array(
-            ),
-            'table' => null,
-            'dbname' => 'test',
-            'username' => '',
-            'password' => '',
         ),
         'memcache' => array(
             'host' => 'localhost',
@@ -44,10 +36,10 @@ abstract class AbstractDAO implements GetModelInterface
      * @param string $key
      * @return array
      */
-    public static function getConfig($key) 
+    public static function getConfig($key)
     {
         // Load the core config.
-        $baseConfig = self::$_baseConfig;
+        $baseConfig = self::$baseConfig;
         // Merge in dao specific config.
         $daoConfig = static::$_config;
         $mergedConfig = array_merge($baseConfig, $daoConfig);
@@ -55,55 +47,55 @@ abstract class AbstractDAO implements GetModelInterface
     }
     
     /**
-     * @param array $write_strategies
-     * @param array $read_strategies
+     * @param array $writeStrategies
+     * @param array $readStrategies
      */
-    public function __construct(array $write_strategies = array(), array $read_strategies = array()) 
+    public function __construct(array $writeStrategies = array(), array $readStrategies = array())
     {
-        $this->_write_strategies = $write_strategies;
-        $this->_read_strategies = $read_strategies;
+        $this->writeStrategies = $writeStrategies;
+        $this->readStrategies = $readStrategies;
     }
     
     /**
      * Create a model.
      * 
-     * @param type $model
-     * @return void
+     * @param AbstractModel $model
+     * @return bool
      * @throws \Exception
      */
     public function create(AbstractModel $model)
     {
         $currentTime = time();
         if ($model->getId() === null) {
-            $uuid = (string)Uuid::uuid5(Uuid::NAMESPACE_DNS, uniqid('',true));
+            $uuid = (string) Uuid::uuid5(Uuid::NAMESPACE_DNS, uniqid('', true));
             $model->setId($uuid);
         }
-        if($model->getDateCreated() === null) {
+        if ($model->getDateCreated() === null) {
             $model->setDateCreated($currentTime);
         }
         $model->setDateLastUpdated($currentTime);
         // Loop over each of the write strategies executing the create method.
-        $this->writeDataChange($model, self::METHOD_CREATE);
+        return $this->writeDataChange($model, self::METHOD_CREATE);
     }
     
     /**
      * Get a model.
      * 
-     * @param type $id
+     * @param string $id
      * @return null|instance of abstract model
      * @throws \Exception
      */
-    public function read($id) 
+    public function read($id)
     {
         $result = null;
-        $model = null;        
+        $model = null;
         // Use the first read strategy that finds the object.
-        foreach($this->_read_strategies as $strategy) {
-            if($result = $strategy->read($id)) {
+        foreach ($this->readStrategies as $strategy) {
+            if ($result = $strategy->read($id)) {
                 break;
             }
         }
-        if($result) {
+        if ($result) {
             $model = static::getModel();
             $model->hydrate($result);
         }
@@ -113,7 +105,8 @@ abstract class AbstractDAO implements GetModelInterface
     /**
      * Update a model.
      * 
-     * @param \Octopus\Model\AbstractModel $model
+     * @param AbstractModel $model
+     * @return bool
      * @throws \Exception
      */
     public function update(AbstractModel $model)
@@ -121,17 +114,17 @@ abstract class AbstractDAO implements GetModelInterface
         $model->setDateLastUpdated(time());
         
         // Loop over each of the write strategies executing the create method.
-        $this->writeDataChange($model, self::METHOD_UPDATE);
+        return $this->writeDataChange($model, self::METHOD_UPDATE);
     }
     
     /**
      * Delete a model.
      * 
-     * @param type $model
+     * @param AbstractModel $model
      * @return bool
      * @throws \Exception
      */
-    public function delete(AbstractModel $model) 
+    public function delete(AbstractModel $model)
     {
         return $this->writeDataChange($model, self::METHOD_DELETE);
     }
@@ -139,63 +132,67 @@ abstract class AbstractDAO implements GetModelInterface
     /**
      * Controller for the write loop.
      * 
-     * @param \Octopus\Model\AbstractModel $model
+     * @param AbstractModel $model
      * @param string $action
      * @throws \Exception
+     * @return bool
      */
-    protected function writeDataChange(AbstractModel $model, $action) 
+    protected function writeDataChange(AbstractModel $model, $action)
     {
-        foreach($this->_write_strategies as $index => $strategy) {
+        foreach ($this->writeStrategies as $index => $strategy) {
             try {
                 // Apply the write to the given strategy.
                 $this->applyWriteStrategy($strategy, $model, $action);
-            } catch(\Exception $e) {
-                // If this was the first strategy (aka primary) that failed, check 
+            } catch (\Exception $e) {
+                // If this was the first strategy (aka primary) that failed, check
                 // to see if there is a backup strategy. If so, try it.
-                if($index === 0 && $this->_primary_write_backup_strategy) {
-                    $this->applyWriteStrategy($this->_primary_write_backup_strategy, $model, $action);
+                if ($index === 0 && $this->primaryWriteBackupStrategy) {
+                    $this->applyWriteStrategy($this->primaryWriteBackupStrategy, $model, $action);
                 } else {
                     throw $e;
                 }
             }
         }
+        return true;
     }
     
     /**
      * Perform an individual write to a strategy.
      * 
-     * @param \Octopus\Strategy\AbstractStrategy $strategy
+     * @param AbstractStrategy $strategy
      * @param AbstractModel $model
      * @param string $action
      * @throws \Exception
-     * @return void
+     * @return bool
      */
-    protected function applyWriteStrategy(\Octopus\Strategy\AbstractStrategy $strategy, AbstractModel $model, $action) 
+    protected function applyWriteStrategy(AbstractStrategy $strategy, AbstractModel $model, $action)
     {
-        if($action == self::METHOD_DELETE) {
+        if ($action == self::METHOD_DELETE) {
             $worked = $strategy->$action($model->getId());
         } else {
-            $worked = $strategy->$action($model->toArray());        
+            $worked = $strategy->$action($model->toArray());
         }
+        return $worked;
     }
     
     /**
      * Indicate what strategy, if any, should be used if the first write strategy 
      * throws an exception.
      * 
-     * @param \Octopus\Strategy\AbstractStrategy $strategy
+     * @param AbstractStrategy $strategy
      */
-    public function setPrimaryWriteBackupStrategy(\Octopus\Strategy\AbstractStrategy $strategy)
+    public function setPrimaryWriteBackupStrategy(AbstractStrategy $strategy)
     {
-        $this->_primary_write_backup_strategy = $strategy;
+        $this->primaryWriteBackupStrategy = $strategy;
     }
     
     /**
-     * @return \Models\Book
+     * Return a new model object that this DAO manages.
+     *
+     * @return AbstractModel
      */
-    static public function getModel()
+    public static function getModel()
     {
-        
         // Explode the model's namespace.
         $namespaceArray = explode('\\', get_called_class());
         
@@ -209,12 +206,10 @@ abstract class AbstractDAO implements GetModelInterface
         $daoNamespace = implode(',', $namespaceArray);
         
         // Instantiate the dao.
-        $fqn = $daoNamespace . '\\' . $class;
+        $fullyQualifiedName = $daoNamespace . '\\' . $class;
         
-        $model = new $fqn();
+        $model = new $fullyQualifiedName();
         
         return $model;
-        
     }
-    
 }

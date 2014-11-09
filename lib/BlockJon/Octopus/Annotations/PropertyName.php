@@ -1,6 +1,6 @@
 <?php
 
-namespace Octopus\Annotation;
+namespace Octopus\Annotations;
 
 use Doctrine\Common\Annotations\Annotation;
 

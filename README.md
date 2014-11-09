@@ -14,13 +14,13 @@ The Octopus API Is Simple
 -------------
 ```
 // Get the dao manager.
-$daoManager = new DaoManager;
+$persistenceManager = new PersistenceManager;
 
 // Create a new model.
 $book = new Book;
 
 // Get the book dao.
-$dao = $daoManager->getDao($book);
+$dao = $persistenceManager->getDao($book);
 
 // Set the properties of your model.
 $book->setTitle('A tale of two cities');
