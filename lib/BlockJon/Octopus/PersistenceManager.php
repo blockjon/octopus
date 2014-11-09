@@ -13,7 +13,14 @@ class PersistenceManager
     public function __construct()
     {
         $this->annotationReader = new AnnotationReader();
-        AnnotationRegistry::registerAutoloadNamespace("Octopus\Annotation", realpath(dirname(__FILE__) . '/../'));
+        AnnotationRegistry::registerAutoloadNamespace(
+            "Octopus\Annotation",
+            realpath(dirname(__FILE__) . '/../')
+        );
+        AnnotationRegistry::registerAutoloadNamespace(
+            'Doctrine\ODM\MongoDB\Mapping\Annotations',
+            realpath(dirname(__FILE__) . '/../../../vendor/doctrine/mongodb-odm/lib')
+        );
     }
 
     /**
@@ -22,7 +29,7 @@ class PersistenceManager
      * @param $model
      * @return array
      */
-    public function getPersistentFieldNames($model)
+    public function getPersistentOctopusFieldNames($model)
     {
         $annotationReader = $this->annotationReader;
         $reflectionObject = new \ReflectionObject($model);

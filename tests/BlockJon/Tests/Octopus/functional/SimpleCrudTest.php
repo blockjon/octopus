@@ -23,7 +23,8 @@ class SimpleCrudTest extends \PHPUnit_Framework_TestCase
     {
         $persistenceManager = new PersistenceManager();
         $book = new Book;
-        $persistentFields = $persistenceManager->getPersistentFieldNames($book);
+        $persistentFields = $persistenceManager->getPersistentOctopusFieldNames($book);
         $this->assertTrue(is_array($persistentFields));
+        $this->assertEquals(1, count($persistentFields));
     }
 }

@@ -4,7 +4,9 @@
     "license": "MIT",
     "require" : {
         "rhumsaa/uuid": "2.7.0",
-        "doctrine/common": "v2.4.1"
+        "doctrine/common": "v2.4.1",
+        "doctrine/mongodb" : "1.1.6",
+        "doctrine/mongodb-odm": "1.0.0-BETA11"
     },
     "require-dev": {
         "phpunit/phpunit" : "4.1.*",

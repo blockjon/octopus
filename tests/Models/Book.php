@@ -3,11 +3,14 @@
 namespace Models;
 
 use Octopus\Annotation as Octopus;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class Book
 {
     /**
-     * @Octopus\Id("foo")
+     * @ODM\Int @ODM\UniqueIndex(background=true)
+     * @Octopus\Id ("foo")
      */
     protected $id;
 
