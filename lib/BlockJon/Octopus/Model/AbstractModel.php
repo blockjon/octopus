@@ -13,7 +13,7 @@ abstract class AbstractModel
     public function __construct()
     {
         $this->_annotationReader = new AnnotationReader();
-        AnnotationRegistry::registerAutoloadNamespace("Octopus\Annotation", realpath(dirname(__FILE__) . '/../../'));
+        AnnotationRegistry::registerAutoloadNamespace("Octopus\Annotation", realpath(dirname(__FILE__).'/../../'));
     }
 
     /**

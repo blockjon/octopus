@@ -2,14 +2,15 @@
 
 namespace Models;
 
-use Octopus as Octopus;
+use Octopus\Annotation as Octopus;
 
 class Book
 {
-
     /**
-     * @Octopus\Annotations\Id
+     * @Octopus\Id("foo")
      */
+    protected $id;
+
     protected $title;
 
     protected $author;
@@ -34,5 +35,21 @@ class Book
     {
         $this->author = $author;
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 }

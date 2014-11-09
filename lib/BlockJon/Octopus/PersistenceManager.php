@@ -13,39 +13,35 @@ class PersistenceManager
     public function __construct()
     {
         $this->annotationReader = new AnnotationReader();
-        $pathToAnnotationsFolder = realpath(dirname(__FILE__) . "/Annotations");
-        AnnotationRegistry::registerAutoloadNamespace('Octopus\Annotations', $pathToAnnotationsFolder);
+        AnnotationRegistry::registerAutoloadNamespace("Octopus\Annotation", realpath(dirname(__FILE__) . '/../'));
     }
 
     /**
-     * Get the list of properties of this object.
+     * Return an indexed array of fields which are persistent.
      *
-     * @param AnnotationReader $reader
+     * @param $model
      * @return array
      */
-    protected function getFieldNames($model)
+    public function getPersistentFieldNames($model)
     {
         $annotationReader = $this->annotationReader;
-
-        $fieldNames = array();
-
         $reflectionObject = new \ReflectionObject($model);
+
+        $results = array();
 
         /**
          * @var $property \ReflectionProperty
          */
         foreach ($reflectionObject->getProperties() as $property) {
-            $annotation = $annotationReader->getPropertyAnnotation($property, 'Octopus\Annotations');
-            if ($annotation) {
-                $fieldNames[] = $property->getName();
+            $propertyAnnotations = $annotationReader->getPropertyAnnotations($property);
+            foreach ($propertyAnnotations as $annotationObject) {
+                $annoationClassName = get_class($annotationObject);
+                if (preg_match('~^Octopus~', $annoationClassName)) {
+                    $results[] = $property->getName();
+                }
             }
         }
-        return $fieldNames;
-    }
 
-    public function getTags($model)
-    {
-        $x = $this->getFieldNames($model);
-        return $x;
+        return $results;
     }
 }

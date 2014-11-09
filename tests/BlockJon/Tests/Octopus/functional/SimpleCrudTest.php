@@ -22,9 +22,8 @@ class SimpleCrudTest extends \PHPUnit_Framework_TestCase
     public function testCanFindOctopusAnnotations()
     {
         $persistenceManager = new PersistenceManager();
-        $book = new Book();
-        $tags = $persistenceManager->getTags($book);
-        print_r($tags);
-        $this->assertTrue(false);
+        $book = new Book;
+        $persistentFields = $persistenceManager->getPersistentFieldNames($book);
+        $this->assertTrue(is_array($persistentFields));
     }
 }
