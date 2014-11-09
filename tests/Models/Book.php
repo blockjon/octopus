@@ -14,8 +14,14 @@ class Book
      */
     protected $id;
 
+    /**
+     * @ODM\String
+     */
     protected $title;
 
+    /**
+     * @ODM\String
+     */
     protected $author;
     
     public function getTitle()
