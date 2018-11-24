@@ -61,3 +61,5 @@ Memcache, APC, PdoSqlite, PdoMysql, Json log.
 Note: You can easily implement custom strategy adapters. More adapters be added to Octopus as development continues. Some of the next adapters we'd like to add include MongoDb, REST, and SQS.
 
 
+xxyx
+f1231
